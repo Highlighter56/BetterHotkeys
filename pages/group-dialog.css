@@ -1,0 +1,55 @@
+body {
+  margin: 0;
+  color: #1f2937;
+  background: #f5f7fb;
+  font-family: system-ui, sans-serif;
+}
+
+main {
+  padding: 20px;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+label,
+input,
+select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+label {
+  margin: 12px 0 4px;
+  font-weight: 600;
+}
+
+input,
+select {
+  padding: 8px;
+  border: 1px solid #9ca3af;
+  border-radius: 4px;
+  background: #fff;
+  font: inherit;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 8px 12px;
+  border: 1px solid #6b7280;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#status {
+  color: #b91c1c;
+}

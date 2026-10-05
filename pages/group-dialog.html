@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Customize tab group</title>
+    <link rel="stylesheet" href="group-dialog.css">
+  </head>
+  <body>
+    <main>
+      <h1>Customize tab group</h1>
+      <form id="group-form">
+        <label for="group-title">Name</label>
+        <input id="group-title" name="title" type="text" maxlength="100">
+
+        <label for="group-color">Color</label>
+        <select id="group-color" name="color">
+          <option value="grey">Grey</option>
+          <option value="blue">Blue</option>
+          <option value="red">Red</option>
+          <option value="yellow">Yellow</option>
+          <option value="green">Green</option>
+          <option value="pink">Pink</option>
+          <option value="purple">Purple</option>
+          <option value="cyan">Cyan</option>
+          <option value="orange">Orange</option>
+        </select>
+
+        <div class="actions">
+          <button type="button" id="cancel">Leave defaults</button>
+          <button type="submit">Save group</button>
+        </div>
+      </form>
+      <p id="status" role="status"></p>
+    </main>
+    <script src="group-dialog.js"></script>
+  </body>
+</html>

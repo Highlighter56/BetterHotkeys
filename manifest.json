@@ -1,0 +1,71 @@
+{
+  "manifest_version": 3,
+  "name": "Better Hotkeys",
+  "description": "Keyboard shortcuts for common Chrome tab operations.",
+  "version": "0.1.0",
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "windows"
+  ],
+  "background": {
+    "service_worker": "scripts/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Better Hotkeys",
+    "default_popup": "pages/settings.html"
+  },
+  "options_page": "pages/settings.html",
+  "commands": {
+    "duplicate-tab": {
+      "suggested_key": {
+        "default": "Alt+Shift+D"
+      },
+      "description": "Duplicate the active tab or highlighted tabs"
+    },
+    "toggle-pin": {
+      "description": "Pin or unpin the active tab or highlighted tabs"
+    },
+    "cycle-previous": {
+      "suggested_key": {
+        "default": "Alt+Shift+Left"
+      },
+      "description": "Activate the previous tab"
+    },
+    "cycle-next": {
+      "suggested_key": {
+        "default": "Alt+Shift+Right"
+      },
+      "description": "Activate the next tab"
+    },
+    "move-previous": {
+      "description": "Move the active tab or highlighted tabs left"
+    },
+    "move-next": {
+      "description": "Move the active tab or highlighted tabs right"
+    },
+    "highlight-active": {
+      "suggested_key": {
+        "default": "Alt+Shift+Up"
+      },
+      "description": "Toggle highlighting for the active tab"
+    },
+    "group-tabs": {
+      "description": "Group the active tab or highlighted tabs"
+    },
+    "new-window": {
+      "description": "Move the active tab or highlighted tabs to a new window"
+    },
+    "move-window-previous": {
+      "description": "Move the active tab or highlighted tabs to the previous window"
+    },
+    "move-window-next": {
+      "description": "Move the active tab or highlighted tabs to the next window"
+    }
+  },
+  "options_ui": {
+    "page": "pages/settings.html",
+    "open_in_tab": true
+  }
+}

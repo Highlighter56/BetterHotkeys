@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Better Hotkeys Settings</title>
+    <link rel="stylesheet" href="settings.css">
+  </head>
+  <body>
+    <main>
+      <h1>Better Hotkeys</h1>
+      <p class="intro">
+        Keyboard shortcuts for common Chrome tab operations. Chrome controls the
+        final shortcut assignment and may reserve some combinations.
+      </p>
+
+      <p class="notice">
+        To change a shortcut, open
+        <a href="chrome://extensions/shortcuts" id="shortcuts-link">Chrome's extension shortcuts</a>.
+        Browser- and operating-system-reserved shortcuts cannot be overridden.
+      </p>
+
+      <section aria-labelledby="commands-heading">
+        <h2 id="commands-heading">Commands</h2>
+        <ul id="commands" class="commands"></ul>
+      </section>
+
+      <section aria-labelledby="highlight-heading">
+        <h2 id="highlight-heading">Highlighting note</h2>
+        <p>
+          The previous and next commands activate adjacent tabs without
+          clearing the existing highlighted selection. Alt+Shift+Up toggles the active
+          tab's highlighted state. Chrome limits extensions to four default
+          shortcut assignments; remaining commands can be assigned in Chrome's
+          shortcut page.
+        </p>
+      </section>
+    </main>
+    <script src="settings.js"></script>
+  </body>
+</html>
