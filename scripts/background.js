@@ -57,17 +57,41 @@ async function cycleTab(direction) {
     return;
   }
 
-  const highlightedIds = new Set(
-    tabs.filter((tab) => tab.highlighted).map((tab) => tab.id)
-  );
+  const highlightedIds = tabs
+    .filter((tab) => tab.highlighted)
+    .map((tab) => tab.id);
   const nextIndex = (activeTab.index + direction + tabs.length) % tabs.length;
-  await chrome.tabs.update(tabs[nextIndex].id, { active: true });
+  const targetId = tabs[nextIndex].id;
 
-  await Promise.all(
-    [...highlightedIds].map((tabId) =>
-      chrome.tabs.update(tabId, { highlighted: true })
-    )
+  if (highlightedIds.length === 0) {
+    await chrome.tabs.update(targetId, { active: true });
+    return;
+  }
+
+  await selectTabsAndActivate(
+    activeTab.windowId,
+    [...new Set([...highlightedIds, targetId])],
+    targetId
   );
+}
+
+async function selectTabsAndActivate(windowId, tabIds, activeTabId) {
+  const tabs = await chrome.tabs.query({ windowId });
+  const selectedIds = new Set(tabIds);
+  const selectedTabs = tabs
+    .filter((tab) => selectedIds.has(tab.id))
+    .sort((left, right) => left.index - right.index);
+  const activeTab = selectedTabs.find((tab) => tab.id === activeTabId);
+
+  if (!activeTab || selectedTabs.length === 0) {
+    return;
+  }
+
+  const indexes = selectedTabs
+    .filter((tab) => tab.id !== activeTabId)
+    .map((tab) => tab.index);
+  indexes.push(activeTab.index);
+  await chrome.tabs.highlight({ windowId, tabs: indexes });
 }
 
 async function moveTabs(direction) {
@@ -137,6 +161,11 @@ async function moveTabsToNewWindow() {
       { windowId: newWindow.id, index: -1 }
     );
   }
+  await selectTabsAndActivate(
+    newWindow.id,
+    tabs.map((tab) => tab.id),
+    tabs[0].id
+  );
   await chrome.windows.update(newWindow.id, { focused: true });
 }
 
@@ -165,7 +194,8 @@ async function moveTabsBetweenWindows(direction) {
     tabs.map((tab) => tab.id),
     { windowId: targetWindow.id, index: -1 }
   );
-  await chrome.tabs.update(tabs[0].id, { active: true });
+  const movedTabIds = tabs.map((tab) => tab.id);
+  await selectTabsAndActivate(targetWindow.id, movedTabIds, tabs[0].id);
   await chrome.windows.update(targetWindow.id, { focused: true });
 }
 
