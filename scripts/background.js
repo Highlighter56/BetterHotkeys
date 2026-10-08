@@ -57,22 +57,10 @@ async function cycleTab(direction) {
     return;
   }
 
-  const highlightedIds = tabs
-    .filter((tab) => tab.highlighted)
-    .map((tab) => tab.id);
   const nextIndex = (activeTab.index + direction + tabs.length) % tabs.length;
   const targetId = tabs[nextIndex].id;
 
-  if (highlightedIds.length === 0) {
-    await chrome.tabs.update(targetId, { active: true });
-    return;
-  }
-
-  await selectTabsAndActivate(
-    activeTab.windowId,
-    [...new Set([...highlightedIds, targetId])],
-    targetId
-  );
+  await chrome.tabs.update(targetId, { active: true });
 }
 
 async function selectTabsAndActivate(windowId, tabIds, activeTabId) {
