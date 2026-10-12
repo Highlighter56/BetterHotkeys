@@ -39,6 +39,12 @@
       },
       "description": "Activate the next tab"
     },
+    "highlight-left": {
+      "description": "Activate the previous tab and update the highlighted tabs"
+    },
+    "highlight-right": {
+      "description": "Activate the next tab and update the highlighted tabs"
+    },
     "move-previous": {
       "description": "Move the active tab or highlighted tabs left"
     },

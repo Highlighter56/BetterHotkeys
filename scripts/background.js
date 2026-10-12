@@ -63,23 +63,117 @@ async function cycleTab(direction) {
   await chrome.tabs.update(targetId, { active: true });
 }
 
-async function selectTabsAndActivate(windowId, tabIds, activeTabId) {
-  const tabs = await chrome.tabs.query({ windowId });
-  const selectedIds = new Set(tabIds);
-  const selectedTabs = tabs
-    .filter((tab) => selectedIds.has(tab.id))
-    .sort((left, right) => left.index - right.index);
-  const activeTab = selectedTabs.find((tab) => tab.id === activeTabId);
+// async function highlightAdjacentTab(direction) {
+//   const activeTab = await getActiveTab();
+//   if (!activeTab || activeTab.index < 0) {
+//     return;
+//   }
 
-  if (!activeTab || selectedTabs.length === 0) {
-    return;
+//   const tabs = await chrome.tabs.query({ windowId: activeTab.windowId });
+//   if (tabs.length < 2) {
+//     return;
+//   }
+
+//   const nextIndex = (activeTab.index + direction + tabs.length) % tabs.length;
+//   const targetTab = tabs[nextIndex];
+//   const highlightedIds = new Set(
+//     tabs.filter((tab) => tab.highlighted).map((tab) => tab.id)
+//   );
+
+//   if (highlightedIds.has(targetTab.id)) {
+//     highlightedIds.delete(activeTab.id);
+//   } else {
+//     highlightedIds.add(activeTab.id);
+//     highlightedIds.add(targetTab.id);
+//   }
+
+//   await selectTabsAndActivate(
+//     activeTab.windowId,
+//     [...highlightedIds],
+//     targetTab.id
+//   );
+// }
+
+// async function selectTabsAndActivate(windowId, tabIds, activeTabId) {
+//   const tabs = await chrome.tabs.query({ windowId });
+//   const selectedIds = new Set(tabIds);
+//   const selectedTabs = tabs
+//     .filter((tab) => selectedIds.has(tab.id))
+//     .sort((left, right) => left.index - right.index);
+//   const activeTab = selectedTabs.find((tab) => tab.id === activeTabId);
+
+//   if (!activeTab || selectedTabs.length === 0) {
+//     return;
+//   }
+
+//   const indexes = selectedTabs
+//     .filter((tab) => tab.id !== activeTabId)
+//     .map((tab) => tab.index);
+//   indexes.push(activeTab.index);
+//   await chrome.tabs.update(activeTabId, { active: true });
+//   await chrome.tabs.highlight({ windowId, tabs: indexes });
+// }
+
+async function highlightAdjacentTab(direction) {
+  const activeTab = await getActiveTab();
+  if (!activeTab || activeTab.index < 0) return;
+
+  const tabs = await chrome.tabs.query({ windowId: activeTab.windowId });
+  if (tabs.length < 2) return;
+
+  // Optional: clamp bounds or wrap. 
+  // For tab selections, clamping usually prevents accidentally highlighting tab 0 from tab N.
+  const nextIndex = activeTab.index + direction;
+  if (nextIndex < 0 || nextIndex >= tabs.length) {
+    return; // Reached end of tab strip
   }
 
-  const indexes = selectedTabs
-    .filter((tab) => tab.id !== activeTabId)
-    .map((tab) => tab.index);
-  indexes.push(activeTab.index);
-  await chrome.tabs.highlight({ windowId, tabs: indexes });
+  const targetTab = tabs[nextIndex];
+  
+  // Set of currently highlighted tab IDs
+  const highlightedIds = new Set(
+    tabs.filter((t) => t.highlighted).map((t) => t.id)
+  );
+
+  // If the target tab is already highlighted:
+  // We are retreating -> unhighlight the tab we are leaving (activeTab).
+  if (highlightedIds.has(targetTab.id)) {
+    highlightedIds.delete(activeTab.id);
+  } else {
+    // We are extending into unhighlighted tabs -> ensure both are kept.
+    highlightedIds.add(activeTab.id);
+    highlightedIds.add(targetTab.id);
+  }
+
+  await highlightTabsAndActivate(
+    activeTab.windowId,
+    [...highlightedIds],
+    targetTab.id
+  );
+}
+
+async function highlightTabsAndActivate(windowId, tabIds, activeTabId) {
+  const tabs = await chrome.tabs.query({ windowId });
+  const selectedIds = new Set(tabIds);
+
+  const selectedTabs = tabs.filter((tab) => selectedIds.has(tab.id));
+  const activeTab = selectedTabs.find((tab) => tab.id === activeTabId);
+
+  if (!activeTab || selectedTabs.length === 0) return;
+
+  // CRITICAL: In Chrome tabs.highlight, the FIRST index in the array 
+  // becomes the active tab. All other indices are highlighted.
+  const indexes = [
+    activeTab.index,
+    ...selectedTabs.filter((t) => t.id !== activeTabId).map((t) => t.index)
+  ];
+
+  // Do NOT call chrome.tabs.update({ active: true })!
+  // Calling tabs.highlight handles both activation and multi-selection in one atomic operation.
+  await chrome.tabs.highlight({
+    windowId,
+    tabs: indexes
+  });
 }
 
 async function moveTabs(direction) {
@@ -192,6 +286,8 @@ const commandHandlers = {
   "toggle-pin": togglePin,
   "cycle-previous": () => cycleTab(-1),
   "cycle-next": () => cycleTab(1),
+  "highlight-left": () => highlightAdjacentTab(-1),
+  "highlight-right": () => highlightAdjacentTab(1),
   "move-previous": () => moveTabs(-1),
   "move-next": () => moveTabs(1),
   "highlight-active": toggleActiveHighlight,

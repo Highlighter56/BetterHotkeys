@@ -20,6 +20,7 @@ common tab operations.
 | Move active or highlighted tabs left/right | Assign in `chrome://extensions/shortcuts` |
 | Toggle highlight for the active tab | `Alt+Shift+Up` |
 | Activate previous/next tab while preserving highlights | `Alt+Shift+Left/Right` |
+| Highlight Left/Right | Assign in `chrome://extensions/shortcuts` |
 | Group active or highlighted tabs | Assign in `chrome://extensions/shortcuts` |
 | Move active or highlighted tabs to a new window | Assign in `chrome://extensions/shortcuts` |
 | Move tabs to the previous/next Chrome window | Assign in `chrome://extensions/shortcuts` |
@@ -35,6 +36,10 @@ that a modifier combination is being held as a temporary mode. The requested hig
 - `Alt+Shift+Left/Right` — activate the adjacent tab without intentionally
   clearing the existing highlighted tabs
 - `Alt+Shift+Up` — toggle highlighting for the active tab
+- Assign `Highlight Left` and `Highlight Right` in
+  `chrome://extensions/shortcuts` to navigate while building a highlighted
+  selection. Moving into an unhighlighted tab adds the current and destination
+  tabs; moving into an already-highlighted tab removes the tab being left.
 
 This is intended to behave like repeated Ctrl-click selection: navigate to a
 tab, toggle its highlight state, navigate to another tab, and toggle again.

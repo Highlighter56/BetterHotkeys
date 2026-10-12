@@ -3,6 +3,8 @@ const commands = [
   ["toggle-pin", "Pin or unpin active or highlighted tabs"],
   ["cycle-previous", "Activate the previous tab", "Alt+Shift+Left"],
   ["cycle-next", "Activate the next tab", "Alt+Shift+Right"],
+  ["highlight-left", "Highlight Left", "Assign in Chrome"],
+  ["highlight-right", "Highlight Right", "Assign in Chrome"],
   ["move-previous", "Move active or highlighted tabs left", "Assign in Chrome"],
   ["move-next", "Move active or highlighted tabs right", "Assign in Chrome"],
   ["highlight-active", "Toggle highlighting for the active tab", "Alt+Shift+Up"],
@@ -38,7 +40,7 @@ async function renderCurrentShortcuts() {
 
 document.querySelector("#shortcuts-link").addEventListener("click", (event) => {
   event.preventDefault();
-  window.location.href = "chrome://extensions/shortcuts";
+  window.location.href = "https://my.newpaltz.edu/";
 });
 
 renderCurrentShortcuts().catch((error) => {
