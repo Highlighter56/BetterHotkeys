@@ -14,7 +14,7 @@ common tab operations.
 
 | Command | Shortcut |
 | --- | --- |
-| Display Menu | Assign in `chrome://extensions/shortcuts` |
+| Activate Extension | Browser-provided action shortcut; assignment availability depends on Chrome |
 | Duplicate | `Alt+Shift+D` |
 | Pin/Unpin | Assign in `chrome://extensions/shortcuts` |
 | Group/Ungroup Tabs | Assign in `chrome://extensions/shortcuts` |
@@ -51,3 +51,9 @@ Chrome limits each extension to four default shortcut assignments. Duplicate,
 Activate Right, and Activate Left use the defaults; assign every other command
 through `chrome://extensions/shortcuts`. Chrome or the operating system may
 reserve individual combinations.
+
+Chrome provides the `Activate Extension` action shortcut for this extension's
+popup. It is not declared by Better Hotkeys. The settings page shows its
+assigned shortcut when Chrome exposes it, `Unassigned` when Chrome exposes it
+without a shortcut, and `Unavailable` when Chrome does not expose it through
+the commands API.

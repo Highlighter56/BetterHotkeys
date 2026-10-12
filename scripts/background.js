@@ -209,7 +209,6 @@ async function moveTabsBetweenWindows(direction) {
 }
 
 const commandHandlers = {
-  "display-menu": () => chrome.action.openPopup(),
   "duplicate-tab": duplicateTabs,
   "toggle-pin": togglePin,
   "cycle-previous": () => cycleTab(-1),

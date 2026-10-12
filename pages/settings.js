@@ -1,5 +1,5 @@
 const commands = [
-  ["display-menu", "Display Menu", "Assign in Chrome"],
+  ["_execute_action", "Activate Extension", "Unavailable"],
   ["duplicate-tab", "Duplicate", "Alt+Shift+D"],
   ["toggle-pin", "Pin/Unpin", "Assign in Chrome"],
   ["group-tabs", "Group/Ungroup Tabs", "Assign in Chrome"],

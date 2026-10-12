@@ -18,9 +18,6 @@
   },
   "options_page": "pages/settings.html",
   "commands": {
-    "display-menu": {
-      "description": "Display Menu"
-    },
     "duplicate-tab": {
       "suggested_key": {
         "default": "Alt+Shift+D"
