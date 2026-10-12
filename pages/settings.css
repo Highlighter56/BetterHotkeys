@@ -21,15 +21,13 @@ h2 {
   color: #111827;
 }
 
-.intro,
 .notice {
   line-height: 1.5;
-}
-
-.notice {
   padding: 16px;
   border-left: 4px solid #2563eb;
   background: #dbeafe;
+  font-family: ui-monospace, monospace;
+  font-size: 11.5px
 }
 
 .commands {

@@ -38,11 +38,6 @@ async function renderCurrentShortcuts() {
   }
 }
 
-document.querySelector("#shortcuts-link").addEventListener("click", (event) => {
-  event.preventDefault();
-  window.location.href = "https://my.newpaltz.edu/";
-});
-
 renderCurrentShortcuts().catch((error) => {
   console.error("Unable to read Chrome shortcut assignments.", error);
 });
