@@ -18,56 +18,53 @@
   },
   "options_page": "pages/settings.html",
   "commands": {
+    "display-menu": {
+      "description": "Display Menu"
+    },
     "duplicate-tab": {
       "suggested_key": {
         "default": "Alt+Shift+D"
       },
-      "description": "Duplicate the active tab or highlighted tabs"
+      "description": "Duplicate"
     },
     "toggle-pin": {
-      "description": "Pin or unpin the active tab or highlighted tabs"
+      "description": "Pin/Unpin"
     },
-    "cycle-previous": {
-      "suggested_key": {
-        "default": "Alt+Shift+Left"
-      },
-      "description": "Activate the previous tab"
+    "group-tabs": {
+      "description": "Group/Ungroup Tabs"
+    },
+    "highlight-right": {
+      "description": "Highlight Right"
+    },
+    "highlight-left": {
+      "description": "Highlight Left"
     },
     "cycle-next": {
       "suggested_key": {
         "default": "Alt+Shift+Right"
       },
-      "description": "Activate the next tab"
+      "description": "Activate Right"
     },
-    "highlight-left": {
-      "description": "Activate the previous tab and update the highlighted tabs"
-    },
-    "highlight-right": {
-      "description": "Activate the next tab and update the highlighted tabs"
-    },
-    "move-previous": {
-      "description": "Move the active tab or highlighted tabs left"
+    "cycle-previous": {
+      "suggested_key": {
+        "default": "Alt+Shift+Left"
+      },
+      "description": "Activate Left"
     },
     "move-next": {
-      "description": "Move the active tab or highlighted tabs right"
+      "description": "Move Tab(s) Right"
     },
-    "highlight-active": {
-      "suggested_key": {
-        "default": "Alt+Shift+Up"
-      },
-      "description": "Toggle highlighting for the active tab"
-    },
-    "group-tabs": {
-      "description": "Group the active tab or highlighted tabs"
+    "move-previous": {
+      "description": "Move Tab(s) Left"
     },
     "new-window": {
-      "description": "Move the active tab or highlighted tabs to a new window"
-    },
-    "move-window-previous": {
-      "description": "Move the active tab or highlighted tabs to the previous window"
+      "description": "Move Tab(s) to New Window"
     },
     "move-window-next": {
-      "description": "Move the active tab or highlighted tabs to the next window"
+      "description": "Move Tab(s) to Next Window"
+    },
+    "move-window-previous": {
+      "description": "Move Tab(s) to Previous Window"
     }
   },
   "options_ui": {

@@ -1,17 +1,17 @@
 const commands = [
-  ["duplicate-tab", "Duplicate active or highlighted tabs", "Alt+Shift+D"],
-  ["toggle-pin", "Pin or unpin active or highlighted tabs"],
-  ["cycle-previous", "Activate the previous tab", "Alt+Shift+Left"],
-  ["cycle-next", "Activate the next tab", "Alt+Shift+Right"],
-  ["highlight-left", "Highlight Left", "Assign in Chrome"],
+  ["display-menu", "Display Menu", "Assign in Chrome"],
+  ["duplicate-tab", "Duplicate", "Alt+Shift+D"],
+  ["toggle-pin", "Pin/Unpin", "Assign in Chrome"],
+  ["group-tabs", "Group/Ungroup Tabs", "Assign in Chrome"],
   ["highlight-right", "Highlight Right", "Assign in Chrome"],
-  ["move-previous", "Move active or highlighted tabs left", "Assign in Chrome"],
-  ["move-next", "Move active or highlighted tabs right", "Assign in Chrome"],
-  ["highlight-active", "Toggle highlighting for the active tab", "Alt+Shift+Up"],
-  ["group-tabs", "Group active or highlighted tabs", "Assign in Chrome"],
-  ["new-window", "Move active or highlighted tabs to a new window", "Assign in Chrome"],
-  ["move-window-previous", "Move tabs to the previous Chrome window", "Assign in Chrome"],
-  ["move-window-next", "Move tabs to the next Chrome window", "Assign in Chrome"]
+  ["highlight-left", "Highlight Left", "Assign in Chrome"],
+  ["cycle-next", "Activate Right", "Alt+Shift+Right"],
+  ["cycle-previous", "Activate Left", "Alt+Shift+Left"],
+  ["move-next", "Move Tab(s) Right", "Assign in Chrome"],
+  ["move-previous", "Move Tab(s) Left", "Assign in Chrome"],
+  ["new-window", "Move Tab(s) to New Window", "Assign in Chrome"],
+  ["move-window-next", "Move Tab(s) to Next Window", "Assign in Chrome"],
+  ["move-window-previous", "Move Tab(s) to Previous Window", "Assign in Chrome"]
 ];
 
 const list = document.querySelector("#commands");
