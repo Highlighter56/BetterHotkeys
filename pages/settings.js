@@ -52,3 +52,13 @@ async function renderCurrentShortcuts() {
 renderCurrentShortcuts().catch((error) => {
   console.error("Unable to read Chrome shortcut assignments.", error);
 });
+
+
+const configureButton = document.querySelector("#configure-btn");
+if (configureButton) {
+  configureButton.addEventListener("click", () => {
+    chrome.tabs.create({ url: "chrome://extensions/shortcuts" }).catch((error) => {
+      console.error("Failed to open shortcuts page:", error);
+    });
+  });
+}

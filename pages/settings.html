@@ -1,29 +1,33 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Better Hotkeys Settings</title>
-    <link rel="stylesheet" href="settings.css">
-  </head>
-  <body>
-    <main>
-      <h1>Better Hotkeys</h1>
+		<head>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<title>Better Hotkeys Settings</title>
+			<link rel="stylesheet" href="settings.css">
+		</head>
+	<body>
+		<main>
+			<h1>Better Hotkeys</h1>
 
-      <p class="notice">
-		Hotkeys can be set at: <br> chrome://extensions/shortcuts
-      </p>
+			<div class="shortcut-container">
+				<button id="configure-btn" class="open-shortcuts-settings">
+					<span>Configure in Chrome</span>
+					<img src="/font-awsome/gears-solid-full.svg" alt="Gear Icon" class="btn-icon">
+				</button>
+			</div>
 
-      <section aria-labelledby="commands-heading">
-        <h2 id="commands-heading">Commands</h2>
 
-		<!-- <a target="_blank" href="chrome://extensions/shortcuts">Configure in Chrome</a> -->
+			<section aria-labelledby="commands-heading">
+				<h2 id="commands-heading">Commands</h2>
 
-        <ul id="commands" class="commands"></ul>
+				<!-- <a target="_blank" href="chrome://extensions/shortcuts">Configure in Chrome</a> -->
 
-      </section>
+				<ul id="commands" class="commands"></ul>
 
-    </main>
-    <script src="settings.js"></script>
-  </body>
+			</section>
+
+		</main>
+		<script src="settings.js"></script>
+	</body>
 </html>
