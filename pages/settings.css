@@ -13,7 +13,11 @@ main {
   box-sizing: border-box;
   max-width: 760px;
   margin: 0 auto;
-  padding: 32px 24px 48px;
+  padding: 16px 24px 32px 12px;
+}
+
+h1 {
+	margin-top: 0;
 }
 
 h1,
@@ -37,27 +41,77 @@ h2 {
   list-style: none;
 }
 
+
 .commands li {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto; /* Left side takes space, right side hugs the hotkey badge */
+  grid-template-rows: auto auto;    /* Top row for title/hotkey, bottom row for suggestion */
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 16px;
+  gap: 4px 12px;                   /* Tight vertical gap, comfortable horizontal gap */
+  padding: 10px 14px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
   background: #fff;
 }
 
+/* Label: Top Left */
+/* .command-label {
+  grid-column: 1;
+  grid-row: 1;
+  font-weight: 500;
+  font-size: 13px;
+  color: #111827;
+} */
+
+/* Label: Left Column */
+.command-label {
+  grid-column: 1;
+  grid-row: span 2;
+  font-weight: 500;
+  font-size: 13px;
+  color: #111827;
+}
+
+/* Current Command: Top Right */
 kbd {
-  padding: 4px 8px;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  padding: 3px 6px;
   border: 1px solid #9ca3af;
   border-bottom-width: 2px;
   border-radius: 4px;
   background: #f3f4f6;
   font-family: ui-monospace, monospace;
+  font-size: 11px;
   white-space: nowrap;
+  /* align-items: end; */
+  margin-top: auto;
 }
 
+/* Suggestion : Full Bottom Row */
+/* .command-suggested {
+  grid-column: span 2;
+  grid-row: 2;
+  font-size: 11px;
+  color: #6b7280;
+  text-align: right;
+} */
+
+/* Suggestion: Bottom Right */
+.command-suggested {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 11px;
+  color: #6b7280;
+  text-align: right; 
+  /* align-items: start; */
+  margin-bottom: auto;
+}
+
+
+
+/* For Light and Dark Mode */
 @media (prefers-color-scheme: dark) {
   body {
     background: #111827;
@@ -78,8 +132,26 @@ kbd {
     background: #1f2937;
   }
 
+  /* Explicitly make the label bright white in dark mode */
+  .command-label {
+    color: #f9fafb;
+  }
+
+  /* Make the suggestion slightly lighter so it's readable in dark mode */
+  .command-suggested {
+    color: #9ca3af;
+  }
+
   kbd {
     border-color: #6b7280;
     background: #374151;
+  }
+
+  .command-label {
+    color: #f9fafb;
+  }
+
+  .command-suggested {
+    color: #9ca3af;
   }
 }
