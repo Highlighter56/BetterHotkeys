@@ -16,8 +16,17 @@
     "default_title": "Better Hotkeys",
     "default_popup": "pages/settings.html"
   },
-  "options_page": "pages/settings.html",
+  "options_ui": {
+    "page": "pages/settings.html",
+    "open_in_tab": true
+  },
   "commands": {
+	"_execute_action": {
+		"suggested_key": {
+			"default": "Alt+Shift+M"
+		},
+		"description": "Display Popup Menu"
+	},
     "duplicate-tab": {
       "suggested_key": {
         "default": "Alt+Shift+D"
@@ -38,13 +47,13 @@
     },
     "cycle-next": {
       "suggested_key": {
-        "default": "Alt+Shift+Right"
+        "default": "Alt+Period"
       },
       "description": "Activate Right"
     },
     "cycle-previous": {
       "suggested_key": {
-        "default": "Alt+Shift+Left"
+        "default": "Alt+Comma"
       },
       "description": "Activate Left"
     },
@@ -63,9 +72,5 @@
     "move-window-previous": {
       "description": "Move Tab(s) to Previous Window"
     }
-  },
-  "options_ui": {
-    "page": "pages/settings.html",
-    "open_in_tab": true
   }
 }

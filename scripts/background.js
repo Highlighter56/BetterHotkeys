@@ -1,8 +1,16 @@
+/**
+ * Better Hotkeys - Background Service Worker
+ */
+
 const DEFAULT_QUERY = {
   active: true,
   currentWindow: true,
   windowType: "normal"
 };
+
+/* =================================v=========================
+ * UTILITY HELPERS
+ * ========================================================== */
 
 async function getActiveTab() {
   const tabs = await chrome.tabs.query(DEFAULT_QUERY);
@@ -27,6 +35,11 @@ function sortTabs(tabs) {
   return [...tabs].sort((left, right) => left.index - right.index);
 }
 
+
+/* ==========================================================
+ * TAB ACTION HANDLERS (Duplicate, Pin, Group)
+ * ========================================================== */
+
 async function duplicateTabs() {
   const tabs = sortTabs(await getOperationTabs());
   for (const tab of tabs) {
@@ -45,6 +58,29 @@ async function togglePin() {
     await chrome.tabs.update(tab.id, { pinned: shouldPin });
   }
 }
+
+async function groupTabs() {
+  const tabs = await getOperationTabs();
+  if (tabs.length === 0) {
+    return;
+  }
+
+  const groupId = await chrome.tabs.group({
+    tabIds: tabs.map((tab) => tab.id)
+  });
+  await chrome.windows.create({
+    url: `${chrome.runtime.getURL("pages/group-dialog.html")}?groupId=${encodeURIComponent(groupId)}`,
+    type: "popup",
+    focused: true,
+    width: 360,
+    height: 320
+  });
+}
+
+
+/* ==========================================================
+ * NAVIGATION & SELECTION HANDLERS (Cycling & Highlighting)
+ * ========================================================== */
 
 async function cycleTab(direction) {
   const activeTab = await getActiveTab();
@@ -114,6 +150,11 @@ async function highlightTabsAndActivate(windowId, tabIds, activeTabId) {
   });
 }
 
+
+/* ==========================================================
+ * WINDOW & MOVEMENT HANDLERS
+ * ========================================================== */
+
 async function moveTabs(direction) {
   const tabs = sortTabs(await getOperationTabs());
   if (tabs.length === 0) {
@@ -137,24 +178,6 @@ async function moveTabs(direction) {
       await chrome.tabs.move(current.id, { index: current.index + 1 });
     }
   }
-}
-
-async function groupTabs() {
-  const tabs = await getOperationTabs();
-  if (tabs.length === 0) {
-    return;
-  }
-
-  const groupId = await chrome.tabs.group({
-    tabIds: tabs.map((tab) => tab.id)
-  });
-  await chrome.windows.create({
-    url: `${chrome.runtime.getURL("pages/group-dialog.html")}?groupId=${encodeURIComponent(groupId)}`,
-    type: "popup",
-    focused: true,
-    width: 360,
-    height: 320
-  });
 }
 
 async function moveTabsToNewWindow() {
@@ -208,6 +231,12 @@ async function moveTabsBetweenWindows(direction) {
   await chrome.windows.update(targetWindow.id, { focused: true });
 }
 
+
+/* ==========================================================
+ * COMMAND ROUTING & EVENT LISTENER
+ * ========================================================== */
+
+// Map manifest command names to their respective handler functions
 const commandHandlers = {
   "duplicate-tab": duplicateTabs,
   "toggle-pin": togglePin,

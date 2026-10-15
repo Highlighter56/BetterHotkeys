@@ -139,7 +139,7 @@ kbd {
 
 
 
-/* For Light and Dark Mode */
+/* For Dark and Light Mode */
 @media (prefers-color-scheme: dark) {
   body {
     background: #111827;
@@ -160,12 +160,10 @@ kbd {
     background: #1f2937;
   }
 
-  /* Explicitly make the label bright white in dark mode */
   .command-label {
     color: #f9fafb;
   }
 
-  /* Make the suggestion slightly lighter so it's readable in dark mode */
   .command-suggested {
     color: #9ca3af;
   }
@@ -196,6 +194,6 @@ kbd {
   }
 
   .btn-icon {
-    filter: invert(1) brightness(0.8); /* Optional: auto-tints a dark SVG icon lighter for dark mode */
+    filter: invert(1) brightness(0.8); 
   }
 }
