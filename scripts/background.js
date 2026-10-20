@@ -8,9 +8,182 @@ const DEFAULT_QUERY = {
   windowType: "normal"
 };
 
+const WINDOW_FOCUS_DEBOUNCE_MS = 75;
+
+let chromeWindowQueue = [];
+let chromeHasFocus = false;
+let isProgrammaticFocus = false;
+let focusLossTimer = null;
+let programmaticFocusTimer = null;
+let windowQueueReady;
+
 /* =================================v=========================
  * UTILITY HELPERS
  * ========================================================== */
+
+function removeWindowFromQueue(windowId) {
+  chromeWindowQueue = chromeWindowQueue.filter((id) => id !== windowId);
+}
+
+function addWindowToQueue(windowId, toFront = true) {
+  removeWindowFromQueue(windowId);
+  if (toFront) {
+    chromeWindowQueue.unshift(windowId);
+  } else {
+    chromeWindowQueue.push(windowId);
+  }
+}
+
+async function initializeWindowQueue() {
+  const windows = await chrome.windows.getAll({ windowTypes: ["normal"] });
+  const focusedWindow = windows.find((window) => window.focused);
+  const remainingWindows = windows
+    .filter((window) => window.id !== focusedWindow?.id)
+    .sort((left, right) => left.id - right.id);
+
+  chromeWindowQueue = [
+    ...(focusedWindow ? [focusedWindow.id] : []),
+    ...remainingWindows.map((window) => window.id)
+  ];
+  chromeHasFocus = Boolean(focusedWindow);
+}
+
+function ensureWindowQueueReady() {
+  if (!windowQueueReady) {
+    windowQueueReady = initializeWindowQueue().catch((error) => {
+      windowQueueReady = null;
+      console.error("Better Hotkeys failed to initialize Chrome windows", error);
+      throw error;
+    });
+  }
+  return windowQueueReady;
+}
+
+async function pruneWindowQueue() {
+  const windows = await chrome.windows.getAll({ windowTypes: ["normal"] });
+  const validIds = new Set(windows.map((window) => window.id));
+  chromeWindowQueue = chromeWindowQueue.filter((id) => validIds.has(id));
+
+  for (const window of windows) {
+    if (!chromeWindowQueue.includes(window.id)) {
+      chromeWindowQueue.push(window.id);
+    }
+  }
+
+  const focusedWindow = windows.find((window) => window.focused);
+  chromeHasFocus = Boolean(focusedWindow);
+  return windows;
+}
+
+function clearProgrammaticFocusGuard() {
+  isProgrammaticFocus = false;
+  if (programmaticFocusTimer !== null) {
+    clearTimeout(programmaticFocusTimer);
+    programmaticFocusTimer = null;
+  }
+}
+
+function setProgrammaticFocusGuard() {
+  isProgrammaticFocus = true;
+  if (programmaticFocusTimer !== null) {
+    clearTimeout(programmaticFocusTimer);
+  }
+  programmaticFocusTimer = setTimeout(() => {
+    programmaticFocusTimer = null;
+    isProgrammaticFocus = false;
+  }, WINDOW_FOCUS_DEBOUNCE_MS * 4);
+}
+
+async function focusQueuedWindow(windowId) {
+  setProgrammaticFocusGuard();
+  try {
+    await chrome.windows.update(windowId, { focused: true, state: "normal" });
+    chromeHasFocus = true;
+    return true;
+  } catch (error) {
+    removeWindowFromQueue(windowId);
+    clearProgrammaticFocusGuard();
+    console.warn(`Better Hotkeys could not focus Chrome window ${windowId}`, error);
+    return false;
+  }
+}
+
+async function focusChrome() {
+  await ensureWindowQueueReady();
+  let windows = await pruneWindowQueue();
+
+  while (chromeWindowQueue.length > 0) {
+    const focusedWindow = windows.find((window) => window.focused);
+    const targetId = focusedWindow && chromeHasFocus
+      ? (() => {
+          addWindowToQueue(focusedWindow.id, false);
+          return chromeWindowQueue[0];
+        })()
+      : chromeWindowQueue[0];
+
+    if (targetId === undefined) {
+      return;
+    }
+
+    const focused = await focusQueuedWindow(targetId);
+    if (focused) {
+      removeWindowFromQueue(targetId);
+      chromeWindowQueue.push(targetId);
+      return;
+    }
+
+    windows = await pruneWindowQueue();
+  }
+}
+
+ensureWindowQueueReady().catch(() => {
+  // The command handler reports subsequent command failures.
+});
+
+chrome.windows.onCreated.addListener((window) => {
+  if (window.type === "normal") {
+    addWindowToQueue(window.id);
+  }
+});
+
+chrome.windows.onRemoved.addListener((windowId) => {
+  removeWindowFromQueue(windowId);
+});
+
+chrome.windows.onFocusChanged.addListener(async (windowId) => {
+  if (focusLossTimer !== null) {
+    clearTimeout(focusLossTimer);
+    focusLossTimer = null;
+  }
+
+  if (windowId === chrome.windows.WINDOW_ID_NONE) {
+    focusLossTimer = setTimeout(async () => {
+      focusLossTimer = null;
+      try {
+        const windows = await chrome.windows.getAll({ windowTypes: ["normal"] });
+        chromeHasFocus = windows.some((window) => window.focused);
+      } catch (error) {
+        console.error("Better Hotkeys failed to check Chrome focus", error);
+      }
+    }, WINDOW_FOCUS_DEBOUNCE_MS);
+    return;
+  }
+
+  chromeHasFocus = true;
+  if (isProgrammaticFocus) {
+    clearProgrammaticFocusGuard();
+    return;
+  }
+
+  try {
+    const window = await chrome.windows.get(windowId);
+    if (window.type === "normal") {
+      addWindowToQueue(windowId);
+    }
+  } catch (error) {
+    console.error(`Better Hotkeys failed to inspect focused window ${windowId}`, error);
+  }
+});
 
 async function getActiveTab() {
   const tabs = await chrome.tabs.query(DEFAULT_QUERY);
@@ -238,6 +411,7 @@ async function moveTabsBetweenWindows(direction) {
 
 // Map manifest command names to their respective handler functions
 const commandHandlers = {
+  "focus-chrome": focusChrome,
   "duplicate-tab": duplicateTabs,
   "toggle-pin": togglePin,
   "cycle-previous": () => cycleTab(-1),

@@ -15,6 +15,7 @@ common tab operations.
 | Command | Shortcut |
 | --- | --- |
 | Activate Extension | Browser-provided action shortcut; assignment availability depends on Chrome |
+| Focus Chrome | Assign in `chrome://extensions/shortcuts` (global scope; no default) |
 | Duplicate | `Alt+Shift+D` |
 | Pin/Unpin | Assign in `chrome://extensions/shortcuts` |
 | Group/Ungroup Tabs | Assign in `chrome://extensions/shortcuts` |
@@ -51,6 +52,12 @@ Chrome limits each extension to four default shortcut assignments. Duplicate,
 Activate Right, and Activate Left use the defaults; assign every other command
 through `chrome://extensions/shortcuts`. Chrome or the operating system may
 reserve individual combinations.
+
+`Focus Chrome` returns focus to Chrome when another application is active and
+cycles through open normal Chrome windows on repeated presses. It has no
+default shortcut, so assign a global shortcut in
+`chrome://extensions/shortcuts`. Chrome must be running for a global command
+to be delivered; ChromeOS may not honor the global scope.
 
 Chrome provides the `Activate Extension` action shortcut for this extension's
 popup. It is not declared by Better Hotkeys. The settings page shows its

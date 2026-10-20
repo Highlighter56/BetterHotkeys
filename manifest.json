@@ -33,6 +33,10 @@
       },
       "description": "Duplicate"
     },
+    "focus-chrome": {
+      "global": true,
+      "description": "Focus Chrome"
+    },
     "toggle-pin": {
       "description": "Pin/Unpin"
     },
