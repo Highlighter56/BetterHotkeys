@@ -1,3 +1,7 @@
+/// <reference types="chrome"/>
+
+import { getSettings, updateSetting } from "../scripts/settings-store.js";
+
 const commands = [
   ["_execute_action", "Activate Extention", "Alt+Shift+M", "Alt+Shift+M"],
   ["duplicate-tab", "Duplicate", "Alt+Shift+D", "Alt+Shift+D"],
@@ -62,3 +66,44 @@ if (configureButton) {
     });
   });
 }
+
+const settingControls = new Map([
+  ["showGroupCustomization", document.querySelector("#show-group-customization")],
+  ["confirmUngroup", document.querySelector("#confirm-ungroup")]
+]);
+const settingsStatus = document.querySelector("#settings-status");
+
+async function loadSettings() {
+  const settings = await getSettings();
+  for (const [name, control] of settingControls) {
+    if (control) {
+      control.checked = settings[name];
+    }
+  }
+}
+
+for (const [name, control] of settingControls) {
+  if (!control) {
+    continue;
+  }
+
+  control.addEventListener("change", async () => {
+    control.disabled = true;
+    settingsStatus.textContent = "";
+    try {
+      await updateSetting(name, control.checked);
+      settingsStatus.textContent = "Settings saved.";
+    } catch (error) {
+      control.checked = !control.checked;
+      settingsStatus.textContent = `Unable to save settings: ${error.message}`;
+      console.error("Unable to save Better Hotkeys settings.", error);
+    } finally {
+      control.disabled = false;
+    }
+  });
+}
+
+loadSettings().catch((error) => {
+  settingsStatus.textContent = `Unable to load settings: ${error.message}`;
+  console.error("Unable to load Better Hotkeys settings.", error);
+});

@@ -3,36 +3,75 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Customize tab group</title>
+    <title>Group</title>
     <link rel="stylesheet" href="group-dialog.css">
   </head>
   <body>
     <main>
-      <h1>Customize tab group</h1>
       <form id="group-form">
-        <label for="group-title">Name</label>
-        <input id="group-title" name="title" type="text" maxlength="100">
-
-        <label for="group-color">Color</label>
-        <select id="group-color" name="color">
-          <option value="grey">Grey</option>
-          <option value="blue">Blue</option>
-          <option value="red">Red</option>
-          <option value="yellow">Yellow</option>
-          <option value="green">Green</option>
-          <option value="pink">Pink</option>
-          <option value="purple">Purple</option>
-          <option value="cyan">Cyan</option>
-          <option value="orange">Orange</option>
-        </select>
-
-        <div class="actions">
-          <button type="button" id="cancel">Leave defaults</button>
-          <button type="submit">Save group</button>
-        </div>
+        <input id="group-title" name="title" type="text" maxlength="100"
+          placeholder="Name this group" aria-label="Name this group" autocomplete="off">
+        <fieldset class="color-options">
+          <legend class="visually-hidden">Group color</legend>
+          <label class="color-option">
+            <input type="radio" name="color" value="blue">
+            <span class="color-swatch swatch-blue"></span>
+            <span class="visually-hidden">Blue</span>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="color" value="purple">
+            <span class="color-swatch swatch-purple"></span>
+            <span class="visually-hidden">Purple</span>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="color" value="pink">
+            <span class="color-swatch swatch-pink"></span>
+            <span class="visually-hidden">Pink</span>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="color" value="red">
+            <span class="color-swatch swatch-red"></span>
+            <span class="visually-hidden">Red</span>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="color" value="orange">
+            <span class="color-swatch swatch-orange"></span>
+            <span class="visually-hidden">Orange</span>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="color" value="yellow">
+            <span class="color-swatch swatch-yellow"></span>
+            <span class="visually-hidden">Yellow</span>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="color" value="green">
+            <span class="color-swatch swatch-green"></span>
+            <span class="visually-hidden">Green</span>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="color" value="cyan">
+            <span class="color-swatch swatch-cyan"></span>
+            <span class="visually-hidden">Cyan</span>
+          </label>
+          <label class="color-option">
+            <input type="radio" name="color" value="grey">
+            <span class="color-swatch swatch-grey"></span>
+            <span class="visually-hidden">Grey</span>
+          </label>
+        </fieldset>
       </form>
-      <p id="status" role="status"></p>
+      <section id="ungroup-panel" hidden>
+        <h1>Ungroup this group?</h1>
+        <p id="ungroup-description"></p>
+        <form id="ungroup-form">
+          <div class="actions">
+            <button type="button" id="cancel-ungroup">Cancel</button>
+            <button type="submit" id="confirm-ungroup">Ungroup</button>
+          </div>
+        </form>
+      </section>
+      <p id="status" role="status" aria-live="polite"></p>
     </main>
-    <script src="group-dialog.js"></script>
+    <script type="module" src="group-dialog.js"></script>
   </body>
 </html>

@@ -31,6 +31,57 @@ h2 {
   margin-bottom: 16px;
 }
 
+.settings-section {
+  margin-bottom: 24px;
+}
+
+.settings-section h2 {
+  margin-bottom: 8px;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-left: 4px solid #2563eb;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.setting-row span {
+  display: grid;
+  gap: 4px;
+}
+
+.setting-row strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.setting-row small {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.setting-row input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+}
+
+#settings-status {
+  min-height: 1em;
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 12px;
+}
+
 .open-shortcuts-settings {
   display: flex;
   align-items: center;
@@ -158,6 +209,17 @@ kbd {
   .commands li {
     border-color: #4b5563;
     background: #1f2937;
+  }
+
+  .setting-row {
+    border-color: #4b5563;
+    border-left-color: #3b82f6;
+    background: #1f2937;
+  }
+
+  .setting-row small,
+  #settings-status {
+    color: #9ca3af;
   }
 
   .command-label {

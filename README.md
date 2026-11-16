@@ -20,7 +20,7 @@ common tab operations.
 | Pin/Unpin | Assign in `chrome://extensions/shortcuts` |
 | Group/Ungroup Tabs | Assign in `chrome://extensions/shortcuts` |
 | Highlight Right/Left | Assign in `chrome://extensions/shortcuts` |
-| Activate Right/Left | `Alt+Shift+Right/Left` |
+| Activate Right/Left | `Alt+Period` / `Alt+Comma` |
 | Move Tab(s) Right/Left | Assign in `chrome://extensions/shortcuts` |
 | Move Tab(s) to New Window | Assign in `chrome://extensions/shortcuts` |
 | Move Tab(s) to Next Window | Assign in `chrome://extensions/shortcuts` |
@@ -42,11 +42,25 @@ that a modifier combination is being held as a temporary mode. The requested hig
 This is intended to behave like repeated Ctrl-click selection: navigate to a
 tab, toggle its highlight state, navigate to another tab, and toggle again.
 
+Activate and Highlight Left/Right treat a collapsed group as one navigation
+stop without expanding it. Expanded groups are traversed tab by tab.
+
 Window movement wraps from the last normal Chrome window to the first and
 focuses the destination window after moving the tab selection.
 
-Grouping opens a Better Hotkeys dialog immediately after the group is created,
-so you can set its title and color without needing to open Chrome's group menu.
+Moving tabs left or right shifts them by one position. A tab wraps to the other
+end of its pinned or unpinned section only when it is already at that edge and
+is moved farther in that direction. A grouped tab moving outward from its
+group edge is ungrouped in place; an adjacent ungrouped tab moving inward joins
+the group in place. Further moves reorder the tab normally.
+
+`Group/Ungroup Tabs` creates a group from the highlighted tabs, or ungroups the
+active tab's entire group. The settings page has separate, OFF-by-default
+options to customize a new group's name/color and confirm before ungrouping.
+When customization is enabled, the popup follows Chrome's compact name-and-
+color layout; press Enter to apply the selected name and color. Ungrouping
+preserves the tabs and their order. When moving a selection between windows,
+any selected group moves as a whole, including unhighlighted members.
 
 Chrome limits each extension to four default shortcut assignments. Duplicate,
 Activate Right, and Activate Left use the defaults; assign every other command
@@ -57,7 +71,14 @@ reserve individual combinations.
 cycles through open normal Chrome windows on repeated presses. It has no
 default shortcut, so assign a global shortcut in
 `chrome://extensions/shortcuts`. Chrome must be running for a global command
-to be delivered; ChromeOS may not honor the global scope.
+to be delivered; ChromeOS may not honor the global scope. Focusing a window
+does not open the extension popup. Minimized windows are restored without
+changing the size or maximized state of already-open windows.
+
+Chrome handles its built-in `Ctrl+Tab` and `Ctrl+Shift+Tab` shortcuts before
+extension commands, so an extension cannot disable or rebind them. `Activate
+Right` and `Activate Left` are additional shortcuts and do not replace Chrome's
+built-in tab switching.
 
 Chrome provides the `Activate Extension` action shortcut for this extension's
 popup. It is not declared by Better Hotkeys. The settings page shows its

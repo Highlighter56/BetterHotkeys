@@ -1,3 +1,7 @@
+/// <reference types="chrome"/>
+
+import { getSettings } from "./settings-store.js";
+
 /**
  * Better Hotkeys - Background Service Worker
  */
@@ -9,6 +13,7 @@ const DEFAULT_QUERY = {
 };
 
 const WINDOW_FOCUS_DEBOUNCE_MS = 75;
+const NO_GROUP_ID = -1;
 
 let chromeWindowQueue = [];
 let chromeHasFocus = false;
@@ -97,8 +102,15 @@ function setProgrammaticFocusGuard() {
 async function focusQueuedWindow(windowId) {
   setProgrammaticFocusGuard();
   try {
-    await chrome.windows.update(windowId, { focused: true, state: "normal" });
+    const window = await chrome.windows.get(windowId);
+    const updateInfo = { focused: true };
+    if (window.state === "minimized") {
+      updateInfo.state = "normal";
+    }
+
+    await chrome.windows.update(windowId, updateInfo);
     chromeHasFocus = true;
+
     return true;
   } catch (error) {
     removeWindowFromQueue(windowId);
@@ -233,21 +245,74 @@ async function togglePin() {
 }
 
 async function groupTabs() {
-  const tabs = await getOperationTabs();
-  if (tabs.length === 0) {
+  const activeTab = await getActiveTab();
+  if (!activeTab) {
     return;
   }
 
+  if (activeTab.groupId !== NO_GROUP_ID) {
+    const settings = await getSettings();
+    if (settings.confirmUngroup) {
+      await openGroupDialog(activeTab.groupId, "ungroup");
+    } else {
+      await ungroupGroup(activeTab.groupId);
+    }
+    return;
+  }
+
+  const settings = await getSettings();
+  const selectedTabs = sortTabs(await getOperationTabs());
+  if (selectedTabs.length === 0) {
+    return;
+  }
+
+  const tabs = await expandTabsToWholeGroups(selectedTabs);
   const groupId = await chrome.tabs.group({
     tabIds: tabs.map((tab) => tab.id)
   });
+  if (settings.showGroupCustomization) {
+    await openGroupDialog(groupId, "customize");
+  }
+}
+
+async function expandTabsToWholeGroups(tabs) {
+  const expandedTabs = new Map(tabs.map((tab) => [tab.id, tab]));
+  const groupIds = new Set(
+    tabs
+      .filter((tab) => tab.groupId !== NO_GROUP_ID)
+      .map((tab) => tab.groupId)
+  );
+
+  for (const groupId of groupIds) {
+    const groupTabs = await chrome.tabs.query({ groupId });
+    for (const tab of groupTabs) {
+      expandedTabs.set(tab.id, tab);
+    }
+  }
+
+  return sortTabs([...expandedTabs.values()]);
+}
+
+async function openGroupDialog(groupId, mode) {
+  const params = new URLSearchParams({
+    groupId: String(groupId),
+    mode
+  });
   await chrome.windows.create({
-    url: `${chrome.runtime.getURL("pages/group-dialog.html")}?groupId=${encodeURIComponent(groupId)}`,
+    url: `${chrome.runtime.getURL("pages/group-dialog.html")}?${params}`,
     type: "popup",
     focused: true,
-    width: 360,
-    height: 320
+    width: 540,
+    height: 260
   });
+}
+
+async function ungroupGroup(groupId) {
+  const tabs = await chrome.tabs.query({ groupId });
+  if (tabs.length === 0) {
+    throw new Error(`Tab group ${groupId} no longer exists.`);
+  }
+  await chrome.tabs.ungroup(tabs.map((tab) => tab.id));
 }
 
 
@@ -255,38 +320,94 @@ async function groupTabs() {
  * NAVIGATION & SELECTION HANDLERS (Cycling & Highlighting)
  * ========================================================== */
 
-async function cycleTab(direction) {
-  const activeTab = await getActiveTab();
+function getNavigationStops(tabs, collapsedGroupIds) {
+  const stops = [];
+  const groupStops = new Map();
+
+  for (const tab of tabs) {
+    if (collapsedGroupIds.has(tab.groupId)) {
+      let stop = groupStops.get(tab.groupId);
+      if (!stop) {
+        stop = { key: `group:${tab.groupId}`, tabs: [] };
+        groupStops.set(tab.groupId, stop);
+        stops.push(stop);
+      }
+      stop.tabs.push(tab);
+    } else {
+      stops.push({ key: `tab:${tab.id}`, tabs: [tab] });
+    }
+  }
+
+  return stops;
+}
+
+async function getNavigationTarget(activeTab, direction) {
   if (!activeTab || activeTab.index < 0) {
+    return null;
+  }
+
+  const [windowTabs, groups] = await Promise.all([
+    chrome.tabs.query({ windowId: activeTab.windowId }),
+    chrome.tabGroups.query({ windowId: activeTab.windowId })
+  ]);
+  const collapsedGroups = groups.filter((group) => group.collapsed);
+  const collapsedGroupIds = new Set(collapsedGroups.map((group) => group.id));
+  const stops = getNavigationStops(sortTabs(windowTabs), collapsedGroupIds);
+  if (stops.length < 2) {
+    return null;
+  }
+
+  const currentStopIndex = stops.findIndex((stop) =>
+    stop.tabs.some((tab) => tab.id === activeTab.id)
+  );
+  if (currentStopIndex < 0) {
+    return null;
+  }
+
+  const targetIndex =
+    (currentStopIndex + direction + stops.length) % stops.length;
+  const targetStop = stops[targetIndex];
+  const targetTab = direction > 0
+    ? targetStop.tabs[0]
+    : targetStop.tabs[targetStop.tabs.length - 1];
+
+  return {
+    tabId: targetTab.id,
+    collapsedGroups
+  };
+}
+
+async function preserveCollapsedGroups(groups) {
+  for (const group of groups) {
+    const currentGroup = await chrome.tabGroups.get(group.id);
+    if (!currentGroup.collapsed) {
+      await chrome.tabGroups.update(group.id, { collapsed: true });
+    }
+  }
+}
+
+async function cycleTab(direction) {
+  const target = await getNavigationTarget(await getActiveTab(), direction);
+  if (!target) {
     return;
   }
 
-  const tabs = await chrome.tabs.query({ windowId: activeTab.windowId });
-  if (tabs.length < 2) {
-    return;
-  }
-
-  const nextIndex = (activeTab.index + direction + tabs.length) % tabs.length;
-  const targetId = tabs[nextIndex].id;
-
-  await chrome.tabs.update(targetId, { active: true });
+  await chrome.tabs.update(target.tabId, { active: true });
+  await preserveCollapsedGroups(target.collapsedGroups);
 }
 
 async function highlightAdjacentTab(direction) {
   const activeTab = await getActiveTab();
-  if (!activeTab || activeTab.index < 0) return;
-
-  const tabs = await chrome.tabs.query({ windowId: activeTab.windowId });
-  if (tabs.length < 2) return;
-
-  const nextIndex = activeTab.index + direction;
-  if (nextIndex < 0 || nextIndex >= tabs.length) {
+  const target = await getNavigationTarget(activeTab, direction);
+  if (!activeTab || !target) {
     return;
   }
 
-  const targetTab = tabs[nextIndex];
+  const targetTab = await chrome.tabs.get(target.tabId);
   const highlightedIds = new Set(
-    tabs.filter((t) => t.highlighted).map((t) => t.id)
+    (await chrome.tabs.query({ windowId: activeTab.windowId }))
+      .filter((tab) => tab.highlighted)
+      .map((tab) => tab.id)
   );
 
   if (highlightedIds.has(targetTab.id)) {
@@ -301,6 +422,7 @@ async function highlightAdjacentTab(direction) {
     [...highlightedIds],
     targetTab.id
   );
+  await preserveCollapsedGroups(target.collapsedGroups);
 }
 
 async function highlightTabsAndActivate(windowId, tabIds, activeTabId) {
@@ -328,49 +450,210 @@ async function highlightTabsAndActivate(windowId, tabIds, activeTabId) {
  * WINDOW & MOVEMENT HANDLERS
  * ========================================================== */
 
-async function moveTabs(direction) {
-  const tabs = sortTabs(await getOperationTabs());
-  if (tabs.length === 0) {
+function getGroupEdgeTabIds(selectedTabs, windowTabs, direction) {
+  const edgeTabIds = new Set();
+  for (const tab of selectedTabs) {
+    if (tab.groupId === NO_GROUP_ID) {
+      continue;
+    }
+
+    const groupTabs = windowTabs.filter(
+      (windowTab) => windowTab.groupId === tab.groupId
+    );
+    const edgeTab = direction < 0
+      ? groupTabs[0]
+      : groupTabs[groupTabs.length - 1];
+    if (edgeTab?.id === tab.id) {
+      edgeTabIds.add(tab.id);
+    }
+  }
+  return edgeTabIds;
+}
+
+async function moveSelectedTab(tabId, direction, edgeTabIds) {
+  const current = await chrome.tabs.get(tabId);
+  const windowTabs = sortTabs(
+    await chrome.tabs.query({ windowId: current.windowId })
+  );
+
+  if (current.groupId !== NO_GROUP_ID) {
+    if (edgeTabIds.has(current.id)) {
+      await chrome.tabs.ungroup(current.id);
+      return;
+    }
+
+    const neighbor = windowTabs.find(
+      (tab) => tab.index === current.index + direction
+    );
+    if (neighbor?.groupId === current.groupId) {
+      await chrome.tabs.move(current.id, {
+        index: current.index + direction
+      });
+    }
     return;
   }
 
-  if (direction < 0) {
-    for (const tab of tabs) {
-      const current = await chrome.tabs.get(tab.id);
-      if (current.index > 0) {
-        await chrome.tabs.move(current.id, { index: current.index - 1 });
+  const neighbor = windowTabs.find(
+    (tab) => tab.index === current.index + direction
+  );
+  if (
+    neighbor &&
+    !current.pinned &&
+    neighbor.groupId !== NO_GROUP_ID
+  ) {
+    const group = await chrome.tabGroups.get(neighbor.groupId);
+    await chrome.tabs.group({
+      tabIds: current.id,
+      groupId: neighbor.groupId
+    });
+
+    const joinedTab = await chrome.tabs.get(current.id);
+    if (joinedTab.index !== current.index) {
+      await chrome.tabs.move(current.id, { index: current.index });
+    }
+
+    if (group.collapsed) {
+      const currentGroup = await chrome.tabGroups.get(group.id);
+      if (!currentGroup.collapsed) {
+        await chrome.tabGroups.update(group.id, { collapsed: true });
       }
     }
     return;
   }
 
-  for (const tab of [...tabs].reverse()) {
-    const current = await chrome.tabs.get(tab.id);
-    const windowTabs = await chrome.tabs.query({ windowId: current.windowId });
-    if (current.index < windowTabs.length - 1) {
-      await chrome.tabs.move(current.id, { index: current.index + 1 });
-    }
-  }
-}
+  const samePinState = windowTabs.filter(
+    (tab) => tab.pinned === current.pinned
+  );
+  const firstIndex = samePinState[0].index;
+  const lastIndex = samePinState[samePinState.length - 1].index;
+  const targetIndex = current.index + direction;
 
-async function moveTabsToNewWindow() {
-  const tabs = await getOperationTabs();
-  if (tabs.length === 0) {
+  if (targetIndex >= firstIndex && targetIndex <= lastIndex) {
+    await chrome.tabs.move(current.id, { index: targetIndex });
     return;
   }
 
-  const newWindow = await chrome.windows.create({ tabId: tabs[0].id });
-  if (tabs.length > 1) {
-    await chrome.tabs.move(
-      tabs.slice(1).map((tab) => tab.id),
-      { windowId: newWindow.id, index: -1 }
-    );
+  await chrome.tabs.move(current.id, {
+    index: direction < 0 ? lastIndex : firstIndex
+  });
+}
+
+async function moveTabs(direction) {
+  const selectedTabs = sortTabs(await getOperationTabs());
+  if (selectedTabs.length === 0) {
+    return;
   }
+
+  const windowTabs = sortTabs(await chrome.tabs.query({
+    windowId: selectedTabs[0].windowId
+  }));
+  const edgeTabIds = getGroupEdgeTabIds(
+    selectedTabs,
+    windowTabs,
+    direction
+  );
+  const tabsToMove = selectedTabs.filter((tab) => !edgeTabIds.has(tab.id));
+  if (direction > 0) {
+    tabsToMove.reverse();
+  }
+
+  for (const tab of selectedTabs.filter((candidate) => edgeTabIds.has(candidate.id))) {
+    await moveSelectedTab(tab.id, direction, edgeTabIds);
+  }
+
+  for (const tab of tabsToMove) {
+    await moveSelectedTab(tab.id, direction, edgeTabIds);
+  }
+}
+
+async function createWindowMoveEntries(selectedTabs) {
+  const tabs = await expandTabsToWholeGroups(selectedTabs);
+  const entries = [];
+  const seenGroupIds = new Set();
+
+  for (const tab of tabs) {
+    if (tab.groupId === NO_GROUP_ID) {
+      entries.push({ type: "tab", tabId: tab.id, index: tab.index });
+      continue;
+    }
+
+    if (seenGroupIds.has(tab.groupId)) {
+      continue;
+    }
+    seenGroupIds.add(tab.groupId);
+
+    const groupTabs = tabs.filter(
+      (groupTab) => groupTab.groupId === tab.groupId
+    );
+    const group = await chrome.tabGroups.get(tab.groupId);
+    entries.push({
+      type: "group",
+      group,
+      tabIds: groupTabs.map((groupTab) => groupTab.id),
+      index: groupTabs[0].index
+    });
+  }
+
+  return entries.sort((left, right) => left.index - right.index);
+}
+
+async function moveWindowEntries(entries, windowId) {
+  const movedGroups = [];
+  for (const entry of entries) {
+    if (entry.type === "tab") {
+      await chrome.tabs.move(entry.tabId, { windowId, index: -1 });
+      continue;
+    }
+
+    const movedGroup = await chrome.tabGroups.move(entry.group.id, {
+      windowId,
+      index: -1
+    });
+    const groupId = movedGroup?.id ?? entry.group.id;
+    const currentGroup = await chrome.tabGroups.get(groupId);
+    const updates = {};
+    if (currentGroup.title !== entry.group.title) {
+      updates.title = entry.group.title || "";
+    }
+    if (currentGroup.color !== entry.group.color) {
+      updates.color = entry.group.color;
+    }
+    if (currentGroup.collapsed !== entry.group.collapsed) {
+      updates.collapsed = entry.group.collapsed;
+    }
+    if (Object.keys(updates).length > 0) {
+      await chrome.tabGroups.update(groupId, updates);
+    }
+    movedGroups.push({
+      ...currentGroup,
+      ...updates,
+      id: groupId,
+      collapsed: entry.group.collapsed
+    });
+  }
+  return movedGroups;
+}
+
+async function moveTabsToNewWindow() {
+  const selectedTabs = sortTabs(await getOperationTabs());
+  if (selectedTabs.length === 0) {
+    return;
+  }
+
+  const entries = await createWindowMoveEntries(selectedTabs);
+  const newWindow = await chrome.windows.create({ focused: false });
+  const placeholderTabs = await chrome.tabs.query({ windowId: newWindow.id });
+  const movedGroups = await moveWindowEntries(entries, newWindow.id);
+  if (placeholderTabs.length > 0) {
+    await chrome.tabs.remove(placeholderTabs.map((tab) => tab.id));
+  }
+
   await highlightTabsAndActivate(
     newWindow.id,
-    tabs.map((tab) => tab.id),
-    tabs[0].id
+    selectedTabs.map((tab) => tab.id),
+    selectedTabs[0].id
   );
+  await preserveCollapsedGroups(movedGroups);
   await chrome.windows.update(newWindow.id, { focused: true });
 }
 
@@ -394,13 +677,19 @@ async function moveTabsBetweenWindows(direction) {
     (currentIndex + direction + windows.length) % windows.length;
   const targetWindow = windows[targetIndex];
 
-  const tabs = await getOperationTabs();
-  await chrome.tabs.move(
-    tabs.map((tab) => tab.id),
-    { windowId: targetWindow.id, index: -1 }
+  const selectedTabs = sortTabs(await getOperationTabs());
+  if (selectedTabs.length === 0) {
+    return;
+  }
+
+  const entries = await createWindowMoveEntries(selectedTabs);
+  const movedGroups = await moveWindowEntries(entries, targetWindow.id);
+  await highlightTabsAndActivate(
+    targetWindow.id,
+    selectedTabs.map((tab) => tab.id),
+    selectedTabs[0].id
   );
-  const movedTabIds = tabs.map((tab) => tab.id);
-  await highlightTabsAndActivate(targetWindow.id, movedTabIds, tabs[0].id);
+  await preserveCollapsedGroups(movedGroups);
   await chrome.windows.update(targetWindow.id, { focused: true });
 }
 

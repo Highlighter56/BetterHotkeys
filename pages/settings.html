@@ -17,6 +17,24 @@
 				</button>
 			</div>
 
+			<section class="settings-section" aria-labelledby="group-settings-heading">
+				<h2 id="group-settings-heading">Group behavior</h2>
+				<label class="setting-row" for="show-group-customization">
+					<span>
+						<strong>Show group customization</strong>
+						<small>Choose a group name and color after grouping tabs.</small>
+					</span>
+					<input id="show-group-customization" type="checkbox">
+				</label>
+				<label class="setting-row" for="confirm-ungroup">
+					<span>
+						<strong>Confirm before ungrouping</strong>
+						<small>Show a confirmation when Group is pressed on a grouped tab.</small>
+					</span>
+					<input id="confirm-ungroup" type="checkbox">
+				</label>
+				<p id="settings-status" role="status" aria-live="polite"></p>
+			</section>
 
 			<section aria-labelledby="commands-heading">
 				<h2 id="commands-heading">Commands</h2>
@@ -28,6 +46,6 @@
 			</section>
 
 		</main>
-		<script src="settings.js"></script>
+		<script type="module" src="settings.js"></script>
 	</body>
 </html>
