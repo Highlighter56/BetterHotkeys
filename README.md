@@ -14,13 +14,13 @@ common tab operations.
 
 | Command | Shortcut |
 | --- | --- |
-| Activate Extension | Browser-provided action shortcut; assignment availability depends on Chrome |
-| Focus Chrome | Assign in `chrome://extensions/shortcuts` (global scope; no default) |
+| Activate Extension | `Alt+Shift+M` |
+| Focus Chrome | (Global) `Alt+Shift+C` |
 | Duplicate | `Alt+Shift+D` |
 | Pin/Unpin | Assign in `chrome://extensions/shortcuts` |
-| Group/Ungroup Tabs | Assign in `chrome://extensions/shortcuts` |
+| Group/Ungroup Tabs | `Alt+Shift+G` |
 | Highlight Right/Left | Assign in `chrome://extensions/shortcuts` |
-| Activate Right/Left | `Alt+Period` / `Alt+Comma` |
+| Activate Right/Left | Assign in `chrome://extensions/shortcuts` (recommended: `Alt+Period` / `Alt+Comma`) |
 | Expand/Collapse Group | Assign in `chrome://extensions/shortcuts` (recommended: `Alt+Shift+U` / `Option+Shift+U` on Mac) |
 | Move Tab(s) Right/Left | Assign in `chrome://extensions/shortcuts` |
 | Move Tab(s) to New Window | Assign in `chrome://extensions/shortcuts` |
@@ -66,26 +66,25 @@ color layout; press Enter to apply the selected name and color. Ungrouping
 preserves the tabs and their order. When moving a selection between windows,
 any selected group moves as a whole, including unhighlighted members.
 
-Chrome limits each extension to four default shortcut assignments. Duplicate,
-Activate Right, and Activate Left use the defaults; assign every other command
-through `chrome://extensions/shortcuts`. Chrome or the operating system may
-reserve individual combinations.
+Chrome limits each extension to four default shortcut assignments. Activate
+Extension, Focus Chrome, Duplicate, and Group/Ungroup Tabs use the defaults;
+assign every other command through `chrome://extensions/shortcuts`. Chrome or
+the operating system may reserve individual combinations.
 
 `Focus Chrome` returns focus to Chrome when another application is active and
-cycles through open normal Chrome windows on repeated presses. It has no
-default shortcut, so assign a global shortcut in
-`chrome://extensions/shortcuts`. Chrome must be running for a global command
-to be delivered; ChromeOS may not honor the global scope. Focusing a window
-does not open the extension popup. Minimized windows are restored without
-changing the size or maximized state of already-open windows.
+cycles through open normal Chrome windows on repeated presses. Its default
+shortcut is global so it can be delivered while another application is active.
+Chrome must be running for a global command to be delivered; ChromeOS may not
+honor the global scope. Focusing a window does not open the extension popup.
+Minimized windows are restored without changing the size or maximized state of
+already-open windows.
 
 Chrome handles its built-in `Ctrl+Tab` and `Ctrl+Shift+Tab` shortcuts before
 extension commands, so an extension cannot disable or rebind them. `Activate
 Right` and `Activate Left` are additional shortcuts and do not replace Chrome's
 built-in tab switching.
 
-Chrome provides the `Activate Extension` action shortcut for this extension's
-popup. It is not declared by Better Hotkeys. The settings page shows its
+`Activate Extension` opens this extension's popup. The settings page shows its
 assigned shortcut when Chrome exposes it, `Unassigned` when Chrome exposes it
 without a shortcut, and `Unavailable` when Chrome does not expose it through
 the commands API.

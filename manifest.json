@@ -35,6 +35,9 @@
       "description": "Duplicate"
     },
     "focus-chrome": {
+      "suggested_key": {
+        "default": "Alt+Shift+C"
+      },
       "global": true,
       "description": "Focus Chrome"
     },
@@ -42,6 +45,9 @@
       "description": "Pin/Unpin"
     },
     "group-tabs": {
+      "suggested_key": {
+        "default": "Alt+Shift+G"
+      },
       "description": "Group/Ungroup Tabs"
     },
     "toggle-group-collapse": {
@@ -54,15 +60,9 @@
       "description": "Highlight Left"
     },
     "cycle-next": {
-      "suggested_key": {
-        "default": "Alt+Period"
-      },
       "description": "Activate Right"
     },
     "cycle-previous": {
-      "suggested_key": {
-        "default": "Alt+Comma"
-      },
       "description": "Activate Left"
     },
     "move-next": {
