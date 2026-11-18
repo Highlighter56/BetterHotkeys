@@ -28,56 +28,56 @@
 		},
 		"description": "Display Popup Menu"
 	},
-    "duplicate-tab": {
+	"0_focus-chrome": {
+	  "suggested_key": {
+		"default": "Alt+Shift+C"
+	  },
+	  "global": true,
+	  "description": "Focus Chrome"
+	},
+    "1_duplicate-tab": {
       "suggested_key": {
         "default": "Alt+Shift+D"
       },
       "description": "Duplicate"
     },
-    "focus-chrome": {
-      "suggested_key": {
-        "default": "Alt+Shift+C"
-      },
-      "global": true,
-      "description": "Focus Chrome"
-    },
-    "toggle-pin": {
+	"2_new-window": {
+	  "description": "Move Tab(s) to New Window"
+	},
+    "3_toggle-pin": {
       "description": "Pin/Unpin"
     },
-    "group-tabs": {
+    "4_group-tabs": {
       "suggested_key": {
         "default": "Alt+Shift+G"
       },
       "description": "Group/Ungroup Tabs"
     },
-    "toggle-group-collapse": {
+    "5_toggle-group-collapse": {
       "description": "Expand/Collapse Group"
     },
-    "highlight-right": {
+	"6_cycle-next": {
+	  "description": "Activate Right"
+	},
+	"7_cycle-previous": {
+	  "description": "Activate Left"
+	},
+    "8_highlight-right": {
       "description": "Highlight Right"
     },
-    "highlight-left": {
+    "90_highlight-left": {
       "description": "Highlight Left"
     },
-    "cycle-next": {
-      "description": "Activate Right"
-    },
-    "cycle-previous": {
-      "description": "Activate Left"
-    },
-    "move-next": {
+    "91_move-next": {
       "description": "Move Tab(s) Right"
     },
-    "move-previous": {
+    "92_move-previous": {
       "description": "Move Tab(s) Left"
     },
-    "new-window": {
-      "description": "Move Tab(s) to New Window"
-    },
-    "move-window-next": {
+    "93_move-window-next": {
       "description": "Move Tab(s) to Next Window"
     },
-    "move-window-previous": {
+    "94_move-window-previous": {
       "description": "Move Tab(s) to Previous Window"
     }
   }

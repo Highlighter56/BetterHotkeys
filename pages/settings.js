@@ -3,21 +3,21 @@
 import { getSettings, updateSetting } from "../scripts/settings-store.js";
 
 const commands = [
-  ["_execute_action",       "Activate Extention",             "Alt+Shift+M",       "Alt+Shift+M"],
-  ["focus-chrome",          "Focus Chrome",                   "Assign in Chrome",  "Global | Alt+Shift+C"],
-  ["duplicate-tab",         "Duplicate",                      "Alt+Shift+D",       "Alt+Shift+D"],
-  ["new-window",            "Move Tab(s) to New Window",      "Assign in Chrome",  "Alt+Shift+N"],
-  ["toggle-pin",            "Pin/Unpin",                      "Assign in Chrome",  "Alt+Shift+X"],
-  ["group-tabs",            "Group/Ungroup Tabs",             "Assign in Chrome",  "Alt+Shift+G"],
-  ["toggle-group-collapse", "Expand/Collapse Group",          "Assign in Chrome",  "Alt+Shift+U"],
-  ["cycle-next",            "Activate Right",                 "Alt+Period",        "Alt+Period"],
-  ["cycle-previous",        "Activate Left",                  "Alt+Comma",         "Alt+Comma"],
-  ["highlight-right",       "Highlight Right",                "Assign in Chrome",  "Alt+Shift+Period"],
-  ["highlight-left",        "Highlight Left",                 "Assign in Chrome",  "Alt+Shift+Comma"],
-  ["move-next",             "Move Tab(s) Right",              "Assign in Chrome",  "Alt+Shift+L"],
-  ["move-previous",         "Move Tab(s) Left",               "Assign in Chrome",  "Alt+Shift+K"],
-  ["move-window-next",      "Move Tab(s) to Next Window",     "Assign in Chrome",  "Ctrl+Shift+L"],
-  ["move-window-previous",  "Move Tab(s) to Previous Window", "Assign in Chrome",  "Ctrl+Shift+K"]
+  ["_execute_action",      		"Activate Extention",             "Alt+Shift+M",       "Alt+Shift+M"],
+  ["0_focus-chrome",          	"Focus Chrome",                   "Assign in Chrome",  "Global | Alt+Shift+C"],
+  ["1_duplicate-tab",         	"Duplicate",                      "Alt+Shift+D",       "Alt+Shift+D"],
+  ["2_new-window",            	"Move Tab(s) to New Window",      "Assign in Chrome",  "Alt+Shift+N"],
+  ["3_toggle-pin",            	"Pin/Unpin",                      "Assign in Chrome",  "Alt+Shift+X"],
+  ["4_group-tabs",            	"Group/Ungroup Tabs",             "Assign in Chrome",  "Alt+Shift+G"],
+  ["5_toggle-group-collapse", 	"Expand/Collapse Group",          "Assign in Chrome",  "Alt+Shift+U"],
+  ["6_cycle-next",            	"Activate Right",                 "Alt+Period",        "Alt+Period"],
+  ["7_cycle-previous",        	"Activate Left",                  "Alt+Comma",         "Alt+Comma"],
+  ["8_highlight-right",       	"Highlight Right",                "Assign in Chrome",  "Alt+Shift+Period"],
+  ["90_highlight-left",        	"Highlight Left",                 "Assign in Chrome",  "Alt+Shift+Comma"],
+  ["91_move-next",             	"Move Tab(s) Right",              "Assign in Chrome",  "Alt+Shift+L"],
+  ["92_move-previous",         	"Move Tab(s) Left",               "Assign in Chrome",  "Alt+Shift+K"],
+  ["93_move-window-next",      	"Move Tab(s) to Next Window",     "Assign in Chrome",  "Ctrl+Shift+L"],
+  ["94_move-window-previous",  	"Move Tab(s) to Previous Window", "Assign in Chrome",  "Ctrl+Shift+K"]
 ];
 
 const list = document.querySelector("#commands");
