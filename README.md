@@ -21,6 +21,7 @@ common tab operations.
 | Group/Ungroup Tabs | Assign in `chrome://extensions/shortcuts` |
 | Highlight Right/Left | Assign in `chrome://extensions/shortcuts` |
 | Activate Right/Left | `Alt+Period` / `Alt+Comma` |
+| Expand/Collapse Group | Assign in `chrome://extensions/shortcuts` (recommended: `Alt+Shift+U` / `Option+Shift+U` on Mac) |
 | Move Tab(s) Right/Left | Assign in `chrome://extensions/shortcuts` |
 | Move Tab(s) to New Window | Assign in `chrome://extensions/shortcuts` |
 | Move Tab(s) to Next Window | Assign in `chrome://extensions/shortcuts` |
@@ -43,7 +44,9 @@ This is intended to behave like repeated Ctrl-click selection: navigate to a
 tab, toggle its highlight state, navigate to another tab, and toggle again.
 
 Activate and Highlight Left/Right treat a collapsed group as one navigation
-stop without expanding it. Expanded groups are traversed tab by tab.
+stop without expanding it. The active edge tab in a collapsed group can be
+expanded or collapsed with `Expand/Collapse Group`. Expanded groups are
+traversed tab by tab.
 
 Window movement wraps from the last normal Chrome window to the first and
 focuses the destination window after moving the tab selection.
@@ -55,8 +58,9 @@ group edge is ungrouped in place; an adjacent ungrouped tab moving inward joins
 the group in place. Further moves reorder the tab normally.
 
 `Group/Ungroup Tabs` creates a group from the highlighted tabs, or ungroups the
-active tab's entire group. The settings page has separate, OFF-by-default
-options to customize a new group's name/color and confirm before ungrouping.
+active tab's entire group. The settings page has separate, ON-by-default
+options to show the group customization menu and confirm before ungrouping, as
+well as a setting to show or hide recommended shortcuts.
 When customization is enabled, the popup follows Chrome's compact name-and-
 color layout; press Enter to apply the selected name and color. Ungrouping
 preserves the tabs and their order. When moving a selection between windows,

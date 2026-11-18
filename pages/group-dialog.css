@@ -5,34 +5,33 @@
 
 body {
   box-sizing: border-box;
-  min-width: 500px;
+  width: 360px;
   margin: 0;
   color: #202124;
   background: #fff;
 }
 
 main {
-  padding: 26px 30px 18px;
-  border: 1px solid #dadce0;
-  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 16px 18px;
 }
 
 #group-form {
   display: grid;
-  gap: 24px;
+  gap: 16px;
 }
 
 #group-title {
   box-sizing: border-box;
   width: 100%;
-  height: 76px;
-  padding: 0 18px;
-  border: 3px solid #dadce0;
-  border-radius: 20px;
+  height: 52px;
+  padding: 0 14px;
+  border: 2px solid #dadce0;
+  border-radius: 12px;
   color: inherit;
   background: transparent;
   font: inherit;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 #group-title::placeholder {
@@ -49,7 +48,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;
   margin: 0;
   padding: 0;
@@ -60,8 +59,8 @@ main {
   position: relative;
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
 }
 
@@ -75,8 +74,8 @@ main {
 
 .color-swatch {
   box-sizing: border-box;
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   border: 1px solid rgb(0 0 0 / 8%);
   border-radius: 50%;
 }
@@ -133,29 +132,29 @@ main {
 }
 
 h1 {
-  margin: 0 0 10px;
-  font-size: 20px;
+  margin: 0 0 8px;
+  font-size: 18px;
 }
 
 #ungroup-description {
   margin: 0;
   color: #5f6368;
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  margin-top: 20px;
+  margin-top: 16px;
 }
 
 button {
-  min-height: 36px;
-  padding: 0 16px;
+  min-height: 32px;
+  padding: 0 12px;
   border: 1px solid #dadce0;
-  border-radius: 18px;
+  border-radius: 16px;
   color: #202124;
   background: #fff;
   font: inherit;
@@ -174,7 +173,7 @@ button:focus-visible {
 }
 
 #status {
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   color: #b3261e;
   font-size: 12px;
 }
@@ -197,10 +196,6 @@ button:focus-visible {
   body {
     color: #e8eaed;
     background: #202124;
-  }
-
-  main {
-    border-color: #5f6368;
   }
 
   #group-title {

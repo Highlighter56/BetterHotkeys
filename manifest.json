@@ -44,6 +44,9 @@
     "group-tabs": {
       "description": "Group/Ungroup Tabs"
     },
+    "toggle-group-collapse": {
+      "description": "Expand/Collapse Group"
+    },
     "highlight-right": {
       "description": "Highlight Right"
     },

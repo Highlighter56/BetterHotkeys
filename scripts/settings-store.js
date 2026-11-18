@@ -1,8 +1,9 @@
 /// <reference types="chrome"/>
 
 const DEFAULT_SETTINGS = Object.freeze({
-  showGroupCustomization: false,
-  confirmUngroup: false
+  showGroupCustomization: true,
+  confirmUngroup: true,
+  displayRecommendedCommands: true
 });
 
 export async function getSettings() {
@@ -15,7 +16,11 @@ export async function getSettings() {
     confirmUngroup:
       typeof stored.confirmUngroup === "boolean"
         ? stored.confirmUngroup
-        : DEFAULT_SETTINGS.confirmUngroup
+        : DEFAULT_SETTINGS.confirmUngroup,
+    displayRecommendedCommands:
+      typeof stored.displayRecommendedCommands === "boolean"
+        ? stored.displayRecommendedCommands
+        : DEFAULT_SETTINGS.displayRecommendedCommands
   };
 }
 

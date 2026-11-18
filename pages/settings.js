@@ -7,6 +7,7 @@ const commands = [
   ["duplicate-tab", "Duplicate", "Alt+Shift+D", "Alt+Shift+D"],
   ["toggle-pin", "Pin/Unpin", "Assign in Chrome", "Alt+Shift+X"],
   ["group-tabs", "Group/Ungroup Tabs", "Assign in Chrome", "Alt+Shift+G"],
+  ["toggle-group-collapse", "Expand/Collapse Group", "Assign in Chrome", "Alt+Shift+U"],
   ["highlight-right", "Highlight Right", "Assign in Chrome", "Alt+L"],
   ["highlight-left", "Highlight Left", "Assign in Chrome", "Alt+K"],
   ["cycle-next", "Activate Right", "Alt+Period", "Alt+Period"],
@@ -69,9 +70,14 @@ if (configureButton) {
 
 const settingControls = new Map([
   ["showGroupCustomization", document.querySelector("#show-group-customization")],
-  ["confirmUngroup", document.querySelector("#confirm-ungroup")]
+  ["confirmUngroup", document.querySelector("#confirm-ungroup")],
+  ["displayRecommendedCommands", document.querySelector("#display-recommended-commands")]
 ]);
 const settingsStatus = document.querySelector("#settings-status");
+
+function updateRecommendedCommandsVisibility(isVisible) {
+  list.classList.toggle("hide-recommendations", !isVisible);
+}
 
 async function loadSettings() {
   const settings = await getSettings();
@@ -80,6 +86,7 @@ async function loadSettings() {
       control.checked = settings[name];
     }
   }
+  updateRecommendedCommandsVisibility(settings.displayRecommendedCommands);
 }
 
 for (const [name, control] of settingControls) {
@@ -92,6 +99,9 @@ for (const [name, control] of settingControls) {
     settingsStatus.textContent = "";
     try {
       await updateSetting(name, control.checked);
+      if (name === "displayRecommendedCommands") {
+        updateRecommendedCommandsVisibility(control.checked);
+      }
       settingsStatus.textContent = "Settings saved.";
     } catch (error) {
       control.checked = !control.checked;

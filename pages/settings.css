@@ -53,19 +53,9 @@ h2 {
   cursor: pointer;
 }
 
-.setting-row span {
-  display: grid;
-  gap: 4px;
-}
-
 .setting-row strong {
   font-size: 13px;
   font-weight: 600;
-}
-
-.setting-row small {
-  color: #6b7280;
-  font-size: 12px;
 }
 
 .setting-row input {
@@ -120,7 +110,6 @@ h2 {
   list-style: none;
 }
 
-
 .commands li {
   display: grid;
   grid-template-columns: 1fr auto; /* Left side takes space, right side hugs the hotkey badge */
@@ -131,6 +120,27 @@ h2 {
   border: 1px solid #d1d5db;
   border-radius: 6px;
   background: #fff;
+}
+
+.commands.hide-recommendations li {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+.commands.hide-recommendations .command-label {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.commands.hide-recommendations kbd {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  margin-top: 0;
+}
+
+.commands.hide-recommendations .command-suggested {
+  display: none;
 }
 
 /* Label: Top Left */
@@ -217,7 +227,6 @@ kbd {
     background: #1f2937;
   }
 
-  .setting-row small,
   #settings-status {
     color: #9ca3af;
   }

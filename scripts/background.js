@@ -302,8 +302,8 @@ async function openGroupDialog(groupId, mode) {
     url: `${chrome.runtime.getURL("pages/group-dialog.html")}?${params}`,
     type: "popup",
     focused: true,
-    width: 540,
-    height: 260
+    width: 380,
+    height: mode === "ungroup" ? 200 : 170
   });
 }
 
@@ -313,6 +313,16 @@ async function ungroupGroup(groupId) {
     throw new Error(`Tab group ${groupId} no longer exists.`);
   }
   await chrome.tabs.ungroup(tabs.map((tab) => tab.id));
+}
+
+async function toggleGroupCollapse() {
+  const activeTab = await getActiveTab();
+  if (!activeTab || activeTab.groupId === NO_GROUP_ID) {
+    return;
+  }
+
+  const group = await chrome.tabGroups.get(activeTab.groupId);
+  await chrome.tabGroups.update(group.id, { collapsed: !group.collapsed });
 }
 
 
@@ -710,6 +720,7 @@ const commandHandlers = {
   "move-previous": () => moveTabs(-1),
   "move-next": () => moveTabs(1),
   "group-tabs": groupTabs,
+  "toggle-group-collapse": toggleGroupCollapse,
   "new-window": moveTabsToNewWindow,
   "move-window-previous": () => moveTabsBetweenWindows(-1),
   "move-window-next": () => moveTabsBetweenWindows(1)
