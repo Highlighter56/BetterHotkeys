@@ -4,6 +4,7 @@
 }
 
 body {
+  min-width: 275px;
   margin: 0;
   background: #f5f7fb;
   color: #1f2937;
@@ -105,6 +106,7 @@ h2 {
 
 .commands {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 8px;
   padding: 0;
   list-style: none;
@@ -112,7 +114,7 @@ h2 {
 
 .commands li {
   display: grid;
-  grid-template-columns: 1fr auto; /* Left side takes space, right side hugs the hotkey badge */
+  grid-template-columns: minmax(0, 1fr) auto; /* Left side takes space, right side hugs the hotkey badge */
   grid-template-rows: auto auto;    /* Top row for title/hotkey, bottom row for suggestion */
   align-items: center;
   gap: 4px 12px;                   /* Tight vertical gap, comfortable horizontal gap */
@@ -123,7 +125,7 @@ h2 {
 }
 
 .commands.hide-recommendations li {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-template-rows: auto;
 }
 
@@ -135,7 +137,7 @@ h2 {
 .commands.hide-recommendations kbd {
   grid-column: 2;
   grid-row: 1;
-  justify-self: center;
+  justify-self: end;
   margin-top: 0;
 }
 
