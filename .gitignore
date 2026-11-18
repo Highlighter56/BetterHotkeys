@@ -4,3 +4,6 @@ implementation.*
 
 # My Temp Files
 *.temp*
+
+# Node - this can be regneerated by running npm install
+node_modules
