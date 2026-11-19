@@ -710,20 +710,20 @@ async function moveTabsBetweenWindows(direction) {
 
 // Map manifest command names to their respective handler functions
 const commandHandlers = {
-  "focus-chrome": focusChrome,
-  "duplicate-tab": duplicateTabs,
-  "toggle-pin": togglePin,
-  "cycle-previous": () => cycleTab(-1),
-  "cycle-next": () => cycleTab(1),
-  "highlight-left": () => highlightAdjacentTab(-1),
-  "highlight-right": () => highlightAdjacentTab(1),
-  "move-previous": () => moveTabs(-1),
-  "move-next": () => moveTabs(1),
-  "group-tabs": groupTabs,
-  "toggle-group-collapse": toggleGroupCollapse,
-  "new-window": moveTabsToNewWindow,
-  "move-window-previous": () => moveTabsBetweenWindows(-1),
-  "move-window-next": () => moveTabsBetweenWindows(1)
+  "0_focus-chrome": focusChrome,
+  "1_duplicate-tab": duplicateTabs,
+  "3_toggle-pin": togglePin,
+  "7_cycle-previous": () => cycleTab(-1),
+  "6_cycle-next": () => cycleTab(1),
+  "90_highlight-left": () => highlightAdjacentTab(-1),
+  "8_highlight-right": () => highlightAdjacentTab(1),
+  "92_move-previous": () => moveTabs(-1),
+  "91_move-next": () => moveTabs(1),
+  "4_group-tabs": groupTabs,
+  "5_toggle-group-collapse": toggleGroupCollapse,
+  "2_new-window": moveTabsToNewWindow,
+  "94_move-window-previous": () => moveTabsBetweenWindows(-1),
+  "93_move-window-next": () => moveTabsBetweenWindows(1)
 };
 
 chrome.commands.onCommand.addListener(async (command) => {
