@@ -2,19 +2,39 @@
 
 import { getSettings, updateSetting } from "../scripts/settings-store.js";
 
+const recommendedShortcuts = {
+  "0_display-popup": 			"Alt+Shift+M",
+  "1_focus-chrome": 			"GLOBAL | Alt+Shift+C",
+  "2_duplicate-tab": 			"Alt+Shift+D",
+  "3_new-window": 				"Alt+Shift+N",
+  "4_toggle-pin": 				"Alt+Shift+X",
+  "5_group-tabs": 				"Alt+Shift+G",
+  "6_toggle-group-collapse": 	"Alt+Shift+U",
+  "7_cycle-next": 				"Alt+Period",
+  "8_cycle-previous": 			"Alt+Comma",
+  "90_highlight-right": 		"Alt+Shift+Period",
+  "91_highlight-left": 			"Alt+Shift+Comma",
+  "92_move-next": 				"Alt+Shift+L",
+  "93_move-previous": 			"Alt+Shift+K",
+  "94_move-window-next": 		"Ctrl+Shift+L",
+  "95_move-window-previous": 	"Ctrl+Shift+K"
+};
+
 const manifestCommands = chrome.runtime.getManifest().commands || {};
 const commands = Object.entries(manifestCommands)
   .filter(([name]) => name !== "_execute_action")
+  .sort(([leftName], [rightName]) => (
+    Number(leftName.split("_", 1)[0]) - Number(rightName.split("_", 1)[0])
+  ))
   .map(([name, command]) => {
     const suggestedShortcut = typeof command.suggested_key === "string"
       ? command.suggested_key
       : command.suggested_key?.default;
-    const scope = command.global ? "Global | " : "";
     return [
       name,
       command.description,
       suggestedShortcut || "Assign in Chrome",
-      suggestedShortcut ? `${scope}${suggestedShortcut}` : ""
+      recommendedShortcuts[name] || ""
     ];
   });
 

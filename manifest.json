@@ -37,9 +37,6 @@
 	  "description": "Display Popup"
 	},
 	"1_focus-chrome": {
-	  "suggested_key": {
-		"default": "Ctrl+Shift+5"
-	  },
 	  "global": true,
 	  "description": "Focus Chrome"
 	},
@@ -50,6 +47,9 @@
       "description": "Duplicate"
     },
 	"3_new-window": {
+      "suggested_key": {
+        "default": "Alt+Shift+N"
+      },
 	  "description": "Move Tab(s) to New Window"
 	},
     "4_toggle-pin": {

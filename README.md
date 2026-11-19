@@ -17,14 +17,14 @@ git clone https://github.com/Highlighter56/BetterHotkeys.git
 3. Select **Load unpacked**.
 4. Choose this repository folder.
 
-## Commands
+## Default commands
 
 | Command | Shortcut |
 | --- | --- |
 | Display Popup | `Alt+Shift+M` |
-| Focus Chrome | (Global) `Ctrl+Shift+5` |
+| Focus Chrome | No default (global command) |
 | Duplicate | `Alt+Shift+D` |
-| Move Tab(s) to New Window | Assign in `chrome://extensions/shortcuts` |
+| Move Tab(s) to New Window | `Alt+Shift+N` |
 | Pin/Unpin | Assign in `chrome://extensions/shortcuts` |
 | Group/Ungroup Tabs | `Alt+Shift+G` |
 | Expand/Collapse Group | Assign in `chrome://extensions/shortcuts` |
@@ -50,9 +50,14 @@ highlighted selection. `Move Tab(s) Right/Left` reorders the active or
 highlighted tabs. Window movement commands move selected tabs between windows.
 
 The settings page includes options for the group customization menu,
-ungroup confirmation, and recommended shortcut visibility. Group customization
-supports a name and Chrome's group colors; pressing Enter applies the form.
-Canceling the ungroup confirmation with Enter leaves the group unchanged.
+ungroup confirmation, and recommended shortcut visibility. Recommended
+shortcuts are informational suggestions displayed separately from the actual
+Chrome assignment. Toggle **Display Recommended Commands** to show or hide
+them. Focus Chrome is global but has no suggested default; its recommendation
+is `GLOBAL | Alt+Shift+C`, which can be assigned from Chrome's shortcut page
+where Chrome and the operating system permit it. Group customization supports
+a name and Chrome's group colors; pressing Enter applies the form. Canceling
+the ungroup confirmation with Enter leaves the group unchanged.
 
 ## Shortcut limitations
 
@@ -61,9 +66,13 @@ available in `chrome://extensions/shortcuts`, where shortcuts can be assigned
 or changed. Chrome may preserve existing user assignments when the extension is
 updated, and operating-system shortcuts can take priority.
 
-Global defaults must use Chrome's supported `Ctrl+Shift+[0-9]` format and are
-not supported on ChromeOS. Chrome also handles built-in shortcuts such as
-`Ctrl+Tab` before extension commands.
+Chrome allows only four suggested extension shortcuts. Those defaults are
+Display Popup, Duplicate, Group/Ungroup Tabs, and Move Tab(s) to New Window.
+Focus Chrome remains global and available for manual assignment; Chrome only
+allows global default suggestions in the `Ctrl+Shift+[0-9]` format. Chrome may
+preserve existing user assignments when the extension is updated, and
+operating-system shortcuts can take priority. Chrome also handles built-in
+shortcuts such as `Ctrl+Tab` before extension commands.
 
 ## Modifying the extension
 
