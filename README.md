@@ -67,3 +67,7 @@ The settings page reads command descriptions and suggested shortcuts directly
 from `manifest.json`, so user-facing command labels only need to be updated
 there. Keep extension pages free of inline scripts because Manifest V3's CSP
 requires external JavaScript files.
+
+## License
+
+Better Hotkeys is licensed under the [MIT License with the Commons Clause](./LICENSE). You are free to use and modify, but can not sell in any way.
