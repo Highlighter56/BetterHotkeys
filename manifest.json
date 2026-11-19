@@ -28,61 +28,64 @@
   },
   "commands": {
 	"_execute_action": {
-		"suggested_key": {
-			"default": "Alt+Shift+M"
-		},
-		"description": "Display Popup"
+		"description": "Activate Extension"
 	},
-	"0_focus-chrome": {
+	"0_display-popup": {
 	  "suggested_key": {
-		"default": "Alt+Shift+C"
+		"default": "Alt+Shift+M"
+	  },
+	  "description": "Display Popup"
+	},
+	"1_focus-chrome": {
+	  "suggested_key": {
+		"default": "Ctrl+Shift+5"
 	  },
 	  "global": true,
 	  "description": "Focus Chrome"
 	},
-    "1_duplicate-tab": {
+    "2_duplicate-tab": {
       "suggested_key": {
         "default": "Alt+Shift+D"
       },
       "description": "Duplicate"
     },
-	"2_new-window": {
+	"3_new-window": {
 	  "description": "Move Tab(s) to New Window"
 	},
-    "3_toggle-pin": {
+    "4_toggle-pin": {
       "description": "Pin/Unpin"
     },
-    "4_group-tabs": {
+    "5_group-tabs": {
       "suggested_key": {
         "default": "Alt+Shift+G"
       },
       "description": "Group/Ungroup Tabs"
     },
-    "5_toggle-group-collapse": {
+    "6_toggle-group-collapse": {
       "description": "Expand/Collapse Group"
     },
-	"6_cycle-next": {
+	"7_cycle-next": {
 	  "description": "Activate Right"
 	},
-	"7_cycle-previous": {
+	"8_cycle-previous": {
 	  "description": "Activate Left"
 	},
-    "8_highlight-right": {
+    "90_highlight-right": {
       "description": "Highlight Right"
     },
-    "90_highlight-left": {
+    "91_highlight-left": {
       "description": "Highlight Left"
     },
-    "91_move-next": {
+    "92_move-next": {
       "description": "Move Tab(s) Right"
     },
-    "92_move-previous": {
+    "93_move-previous": {
       "description": "Move Tab(s) Left"
     },
-    "93_move-window-next": {
+    "94_move-window-next": {
       "description": "Move Tab(s) to Next Window"
     },
-    "94_move-window-previous": {
+    "95_move-window-previous": {
       "description": "Move Tab(s) to Previous Window"
     }
   }

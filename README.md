@@ -33,7 +33,10 @@ git clone https://github.com/Highlighter56/BetterHotkeys.git
 | Move Tab(s) Right/Left | Assign in `chrome://extensions/shortcuts` |
 | Move Tab(s) to Next/Previous Window | Assign in `chrome://extensions/shortcuts` |
 
-`Display Popup` opens the extension settings popup. `Focus Chrome` returns
+`Activate Extension` is Chrome's reserved action command and remains available
+in Chrome's shortcut manager without a default assignment. `Display Popup` is
+the user-facing equivalent standard command and opens the extension settings
+popup with the default `Alt+Shift+M`. `Focus Chrome` returns
 focus to Chrome when another application is active and cycles through open
 normal Chrome windows on repeated presses. `Duplicate` duplicates the active
 tab. `Move Tab(s) to New Window` moves the active or highlighted tabs into a
