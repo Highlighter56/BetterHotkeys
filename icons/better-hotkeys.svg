@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title>Better Hotkeys</title>
+  <path fill="#111827" d="M12 20a8 8 0 0 1 8-8h88a8 8 0 0 1 8 8v88a8 8 0 0 1-8 8H20a8 8 0 0 1-8-8z"/>
+  <g fill="#f9fafb">
+    <rect x="22" y="28" width="24" height="24" rx="5"/>
+    <rect x="52" y="28" width="24" height="24" rx="5"/>
+    <rect x="82" y="28" width="24" height="24" rx="5"/>
+    <rect x="37" y="58" width="24" height="24" rx="5"/>
+    <rect x="67" y="58" width="24" height="24" rx="5"/>
+  </g>
+  <path fill="none" stroke="#60a5fa" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" d="M28 94c10-11 19 11 29 0s19 11 29 0 18 10 25-2"/>
+</svg>

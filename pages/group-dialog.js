@@ -10,6 +10,7 @@ const ungroupPanel = document.querySelector("#ungroup-panel");
 const ungroupForm = document.querySelector("#ungroup-form");
 const ungroupDescription = document.querySelector("#ungroup-description");
 const confirmUngroupButton = document.querySelector("#confirm-ungroup");
+const cancelUngroupButton = document.querySelector("#cancel-ungroup");
 const status = document.querySelector("#status");
 let isSubmitting = false;
 
@@ -117,14 +118,23 @@ document.addEventListener("keydown", (event) => {
     return;
   }
 
-  if (event.key !== "Enter" || event.isComposing || event.repeat) {
+  if (
+    event.key !== "Enter" ||
+    event.isComposing ||
+    event.keyCode === 229 ||
+    event.repeat
+  ) {
     return;
   }
 
   event.preventDefault();
   event.stopPropagation();
   if (mode === "ungroup") {
-    confirmUngroupButton.click();
+    if (document.activeElement === cancelUngroupButton) {
+      cancelUngroupButton.click();
+    } else {
+      confirmUngroupButton.click();
+    }
   } else {
     void saveGroup();
   }
