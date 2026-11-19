@@ -6,7 +6,7 @@ common tab operations.
 ## Install locally or download the code
 
 Download the [repository from GitHub](https://github.com/Highlighter56/BetterHotkeys)
-using **Code → Download ZIP**, or clone it:
+using **Code → Download ZIP**, (make sure to unzip once downloaded) or clone it:
 
 ```sh
 git clone https://github.com/Highlighter56/BetterHotkeys.git
@@ -17,62 +17,41 @@ git clone https://github.com/Highlighter56/BetterHotkeys.git
 3. Select **Load unpacked**.
 4. Choose this repository folder.
 
-## Default commands
+## Commands
 
-| Command | Shortcut |
+| Command | Description |
 | --- | --- |
-| Display Popup | `Alt+Shift+M` |
-| Focus Chrome | No default (global command) |
-| Duplicate | `Alt+Shift+D` |
-| Move Tab(s) to New Window | `Alt+Shift+N` |
-| Pin/Unpin | Assign in `chrome://extensions/shortcuts` |
-| Group/Ungroup Tabs | `Alt+Shift+G` |
-| Expand/Collapse Group | Assign in `chrome://extensions/shortcuts` |
-| Activate Right/Left | Assign in `chrome://extensions/shortcuts` |
-| Highlight Right/Left | Assign in `chrome://extensions/shortcuts` |
-| Move Tab(s) Right/Left | Assign in `chrome://extensions/shortcuts` |
-| Move Tab(s) to Next/Previous Window | Assign in `chrome://extensions/shortcuts` |
+| Display Popup | Displays a pop up menu in chrome that shows the currently set commands, links to `chrome://extentions/shortcuts`, and displays some minor settings |
+| Focus Chrome | Make sure to **Set Scope to Global**, otherwise this command will not work as intended<br> If chrome is opened, will bring it into focus. If multiple chrome tabs are open, it will cycle through |
+| Duplicate | Duplicates the activate tab(s) |
+| Move Tab(s) to New Window | Moves the activate tab(s) to a new chrome window |
+| Pin/Unpin | Toggles whether a tab is Pinned or Unpinned |
+| Group/Ungroup Tabs | If called on a group of tabs that are not currenlty gruoped, will group them. <br> If called while the active tab is already part of a group, will ungroup them |
+| Expand/Collapse Group | If called while the active tab is inside a group, will toggle whether a group is Collapsed or Expanded <br> If called outside a group, nothing will happen |
+| Activate Right/Left | Activates the tab to right/left of the currenlty active tab |
+| Highlight Right/Left | Highlights the currnet tab, and the tab to the Right/Left. <br> Can be called multipel times to highlight many tabs |
+| Move Tab(s) Right/Left | Moves the active tab(s) to the Right/Left |
+| Move Tab(s) to Next/Previous Window | Moves the activate tab(s) between existing chrome windows |
+---
 
-`Activate Extension` is Chrome's reserved action command and remains available
-in Chrome's shortcut manager without a default assignment. `Display Popup` is
-the user-facing equivalent standard command and opens the extension settings
-popup with the default `Alt+Shift+M`. `Focus Chrome` returns
-focus to Chrome when another application is active and cycles through open
-normal Chrome windows on repeated presses. `Duplicate` duplicates the active
-tab. `Move Tab(s) to New Window` moves the active or highlighted tabs into a
-new window.
+## Popup Menu Settings
 
-`Group/Ungroup Tabs` creates a group from highlighted tabs, or ungroups the
-active tab's entire group. `Expand/Collapse Group` toggles the active group's
-collapsed state. `Activate Right/Left` moves the active tab through the tab
-strip. `Highlight Right/Left` moves through the tab strip while building a
-highlighted selection. `Move Tab(s) Right/Left` reorders the active or
-highlighted tabs. Window movement commands move selected tabs between windows.
+| Setting | Description |
+| --- | --- |
+| Show Menu on Group | When Enabled, displays a menu allowing you to set the name and color of the newly created Groups |
+| Confirm Before Ungroup | When Enabled, asks the user to confirm before Ungrouping a set of tabs |
+| Display Recommended Commands | When Enabled, will display my recomended keybinds for each command in the pop up menu |
 
-The settings page includes options for the group customization menu,
-ungroup confirmation, and recommended shortcut visibility. Recommended
-shortcuts are informational suggestions displayed separately from the actual
-Chrome assignment. Toggle **Display Recommended Commands** to show or hide
-them. Focus Chrome is global but has no suggested default; its recommendation
-is `GLOBAL | Alt+Shift+C`, which can be assigned from Chrome's shortcut page
-where Chrome and the operating system permit it. Group customization supports
-a name and Chrome's group colors; pressing Enter applies the form. Canceling
-the ungroup confirmation with Enter leaves the group unchanged.
 
-## Shortcut limitations
+## Shortcut Limitations
 
-Chrome allows only four suggested extension shortcuts. Other commands are
-available in `chrome://extensions/shortcuts`, where shortcuts can be assigned
-or changed. Chrome may preserve existing user assignments when the extension is
-updated, and operating-system shortcuts can take priority.
+Chrome allows each extention to set a max of 4 keybinds by default. Upon instalation, these commands will already be set:
+* Display Popup
+* Duplicate
+* Group/Ungroup
+* Open tab(s) in New Window
 
-Chrome allows only four suggested extension shortcuts. Those defaults are
-Display Popup, Duplicate, Group/Ungroup Tabs, and Move Tab(s) to New Window.
-Focus Chrome remains global and available for manual assignment; Chrome only
-allows global default suggestions in the `Ctrl+Shift+[0-9]` format. Chrome may
-preserve existing user assignments when the extension is updated, and
-operating-system shortcuts can take priority. Chrome also handles built-in
-shortcuts such as `Ctrl+Tab` before extension commands.
+The rest of the commands can be set at `chrome://extensions/shortcuts`. 
 
 ## Modifying the extension
 
@@ -88,9 +67,3 @@ The settings page reads command descriptions and suggested shortcuts directly
 from `manifest.json`, so user-facing command labels only need to be updated
 there. Keep extension pages free of inline scripts because Manifest V3's CSP
 requires external JavaScript files.
-
-## License
-
-This project is released under the MIT License. It permits use, modification,
-and redistribution, including commercial use, provided the copyright and
-license notice are retained. See [LICENSE](LICENSE).
