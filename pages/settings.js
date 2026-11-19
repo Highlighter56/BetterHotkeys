@@ -2,11 +2,12 @@
 
 import { getSettings, updateSetting } from "../scripts/settings-store.js";
 
+// Internal Command Name		Recomended Keybind
 const recommendedShortcuts = {
   "0_display-popup": 			"Alt+Shift+M",
   "1_focus-chrome": 			"GLOBAL | Alt+Shift+C",
   "2_duplicate-tab": 			"Alt+Shift+D",
-  "3_new-window": 				"Alt+Shift+N",
+  "3_new-window": 				"Alt+N",
   "4_toggle-pin": 				"Alt+Shift+X",
   "5_group-tabs": 				"Alt+Shift+G",
   "6_toggle-group-collapse": 	"Alt+Shift+U",

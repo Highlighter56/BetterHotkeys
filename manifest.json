@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Better Hotkeys",
   "description": "Keyboard shortcuts for common Chrome tab operations.",
-  "version": "0.1.0",
+  "version": "0.9.0",
   "icons": {
     "16": "icons/icon-16.png",
     "48": "icons/icon-48.png",
@@ -47,9 +47,9 @@
       "description": "Duplicate"
     },
 	"3_new-window": {
-      "suggested_key": {
-        "default": "Alt+Shift+N"
-      },
+		"suggested_key": {
+		  "default": "Alt+N"
+		},
 	  "description": "Move Tab(s) to New Window"
 	},
     "4_toggle-pin": {
