@@ -4,20 +4,20 @@ import { getSettings, updateSetting } from "../scripts/settings-store.js";
 
 // Internal Command Name		Recomended Keybind
 const recommendedShortcuts = {
-  "0_display-popup": 			"Alt+Shift+M",
-  "1_focus-chrome": 			"GLOBAL | Alt+Shift+C",
-  "2_duplicate-tab": 			"Alt+Shift+D",
-  "3_new-window": 				"Alt+N",
-  "4_toggle-pin": 				"Alt+Shift+X",
-  "5_group-tabs": 				"Alt+Shift+G",
+  "0_display-popup": 			    "Alt+Shift+M",
+  "1_focus-chrome": 			    "(Scope: Global) | Alt+Shift+C",
+  "2_duplicate-tab": 			    "Alt+Shift+D",
+  "3_new-window": 				    "Alt+N",
+  "4_toggle-pin": 				    "Alt+Shift+X",
+  "5_group-tabs": 				    "Alt+Shift+G",
   "6_toggle-group-collapse": 	"Alt+Shift+U",
-  "7_cycle-next": 				"Alt+Period",
-  "8_cycle-previous": 			"Alt+Comma",
-  "90_highlight-right": 		"Alt+Shift+Period",
-  "91_highlight-left": 			"Alt+Shift+Comma",
-  "92_move-next": 				"Alt+Shift+L",
-  "93_move-previous": 			"Alt+Shift+K",
-  "94_move-window-next": 		"Ctrl+Shift+L",
+  "7_cycle-next": 				    "Alt+Period",
+  "8_cycle-previous": 			  "Alt+Comma",
+  "90_highlight-right": 		  "Alt+Shift+Period",
+  "91_highlight-left": 			  "Alt+Shift+Comma",
+  "92_move-next": 				    "Alt+Shift+L",
+  "93_move-previous": 			  "Alt+Shift+K",
+  "94_move-window-next": 		  "Ctrl+Shift+L",
   "95_move-window-previous": 	"Ctrl+Shift+K"
 };
 
